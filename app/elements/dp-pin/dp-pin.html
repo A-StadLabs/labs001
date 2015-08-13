@@ -131,9 +131,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <div class="layout vertical center-center container">
   <div class="pinvlak centertexting layout vertical center-center">
 
-<!--     <div class="errorvlak">
-    <h3>{{error}}</h3>
-    </div> -->
+    <div class="errorzichtbaar errorvlak">
+    <!-- <h3>{{error}}</h3> -->
+    </div>
 
 
     <h2>{{titel}}</h2>
@@ -176,13 +176,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true
         },
 
-        // error: {
-        //   type: String,
-        //   value: '',
-        //   observer: '_errorshow',
-        //   notify: true
+        error: {
+          type: String,
+          value: '',
+          observer: '_errorshow',
+          notify: true
 
-        // },
+        },
 
 
         value: function() {
@@ -220,18 +220,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       ready:function(){
-        // this.errorzichtbaar = hidden;
+        this.errorzichtbaar = false;
       },
 
       _errorshow:function(){
-        if (this.error == "De pincodes komen niet overeen. Gelieve te herbeginnen."){
-          this.customStyle['--errorzichtbaar'] = 'visible';
-         Polymer.updateStyles();
-        }
-        else {
-          console.log("Niks aan het handje");
-
-        }
+          //this.customStyle['--errorzichtbaar'] = 'visible';
       }
 
 

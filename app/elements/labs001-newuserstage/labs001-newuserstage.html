@@ -84,6 +84,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Neon 2 -->
       <neon-animatable>
         <h1>User wordt aangemaakt</h1>
+        <labs-registeruser id="registeruser" on-user-created="_openfireUsercreated"></labs-registeruser>
         <iron-localstorage id="localstorage" name="labs001-user">
         </iron-localstorage>
       </neon-animatable>
@@ -139,8 +140,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if(this.selected==2){
         console.log('--- Local user registration and encryption ---');
         var userid = uuid.v1();
-        console.log('--- Created UUID ---');
         var pincode = this.pin1;
+        console.log('--- Created UUID ---');
+        console.log('--- Starting OpenFire registration ---');
+        console.log('--- userid: ', userid, ' - pincode: ', pincode, ' ---');
+        this.$.registeruser.username = userid;
+        this.$.registeruser.pincode = pincode;
+        this.$.registeruser.go();
         var tmpuserid = CryptoJS.AES.encrypt(userid, pincode);
         console.log('--- Encrypted UUID ---');
         this.encruserid = tmpuserid.toString();
@@ -148,7 +154,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         console.log('--- Stored encrypted UUID in localstorage ---');
         this.selected = 3;
       }
+    },
+
+    _openfireUsercreated: function(){
+      console.log('--- OpenFire registration success ---');
     }
+
+
 
   });
 })();

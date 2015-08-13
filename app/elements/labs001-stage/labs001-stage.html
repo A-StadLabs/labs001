@@ -9,19 +9,106 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+<script src="../../bower_components/strophe.js/strophe.js"></script>
+<script src="../../bower_components/strophejs-plugins/muc/strophe.muc.js"></script>
+<script src="../../bower_components/strophe-openfire-websocket/strophe-openfire-websocket.js"></script>
+<link rel="import" href="../../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+
+
 
 <dom-module id="labs001-stage">
   <style>
-    :host {
+
+  html, body {
+  height: 100%;
+  margin: 0;
+}
+paper-scroll-header-panel {
+  height: 100%;
+}
+
+       :host {
       display: block;
+      @apply(--layout-fit);
     }
+
+    neon-animated-pages {
+      height: 94%;
+    }
+
+    .drawerclicker {
+    width: 100%;
+    height: 6%;
+    background-color: var(--primary-green);
+    @apply(--layout-vertical);
+    @apply(--layout-start);
+  }
+/*
+  .drawerclicker img {
+    width: 100%;
+    height: 100%;
+
+  }
+*/
+
+  .drawer {
+    background-color: var(--primary-green);
+    height: 100%;
+    padding: 10px;
+    box-sizing:border-box;
+  }
+
+  .drawer p,h2,h3 {
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .drawerbtn {
+    cursor: pointer;
+    margin: 6px 0px 0px 6px;
+  }
+
   </style>
   <template>
-    <div>Hello from <span>{{foo}}</span></div>
+    <paper-drawer-panel  force-narrow="true">
+    <div drawer class="drawer">
+      <h2>Dit is de drawer</h2>
+    </div>
+    <div main>
+      <div class="drawerclicker">
+        <img paper-drawer-toggle class="drawerbtn greenback" src="../../images/a_wit-rgb.svg">
+        <span class="flex"></span>
+      </div>
+
+      <neon-animated-pages id="pages" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+
+      <!-- Neon 0 -->
+      <neon-animatable>
+        <dp-pin on-yes="toggleDrawer" on-pin-entered="decryptUser" pin="{{pin1}}" titel="Geef jouw pincode in." error="{{error}}">
+        </dp-pin>
+        <iron-localstorage id="localstorage" name="labs001-user" value="{{encruserid}}">
+        </iron-localstorage>
+      </neon-animatable>
+
+      <!-- Neon 1 -->
+      <neon-animatable>
+        Zover zijn we al. User is connected met openfire server en krijgt alles binnen. Check console log.
+      </neon-animatable>
+
+    </neon-animated-pages>
+  </div>
+  </paper-drawer-panel>
   </template>
 </dom-module>
 <script>
 (function() {
+
+  var conn; 
+
+  var logs = [{log: "first log"}];
+
+
   Polymer({
     is: 'labs001-stage',
 
@@ -30,8 +117,119 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         type: String,
         value: 'bar',
         notify: true
+      },
+
+      logs: {
+        type: Array,
+        observer: "_logLogs"
       }
-    }
+    },
+
+    _logLogs: function(){
+      console.log('logs: ', this.logs);
+    },
+
+    ready: function(){
+      this.selected = 0;
+      this.entryAnimation = 'slide-from-right-animation';
+      this.exitAnimation = 'slide-left-animation';
+      this.logs = [{log: "eerste"}];
+    },
+
+    decryptUser: function(){
+      console.log("--- Decrypting user ID ---");
+      var decrypted = CryptoJS.AES.decrypt(this.encruserid, this.pin1);
+      var decrtostring = decrypted.toString(CryptoJS.enc.Utf8);
+      this.userid = decrtostring;
+      console.log("--- Decryted user ID: ", this.userid);
+      this.login(this.userid, this.pin1);
+    },
+
+    joinRoom: function(username, password){
+      var that = this;
+      this.room = "astadlabs";
+      console.log('--- User joins room "astadlabs"');
+      var room = this.room+"@conference.kingflurkel.dtdns.net";
+      var nick = username+"@kingflurkel.dtdns.net";
+      var password = password;
+      var history_attrs = null;
+      conn.muc.join(room, nick, that.msg_handler_cb, that.pres_handler_cb, that.roster_cb, password, history_attrs);
+    },
+
+    logIets: function(msg){
+      //console.log('--- iets misschien? ', e);
+      var to = msg.getAttribute('to');
+      var from = msg.getAttribute('from');
+      var type = msg.getAttribute('type');
+      var elems = msg.getElementsByTagName('body');
+      var body = elems[0];
+      console.log('--- ',body);
+      console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', body);
+      //logs.push({log: body});
+      return true;
+    },
+
+
+    addtoarray: function(e){
+      console.log(e);
+    },
+
+    login: function(username, password){
+
+      console.log('--- OpenFire start login procedure for user ', username, ' with pass ', password,' ---');
+
+      conn = new Openfire.Connection("ws://kingflurkel.dtdns.net:7070/ws/server", function(e){
+        console.log(e);
+      });
+
+      console.log('connection: ', conn);
+      
+      var that = this;
+
+      conn.connect(username, password, function(status){
+        console.log('connect');
+        if (status === Strophe.Status.CONNECTED) {
+          console.log('--- Connected to OpenFire');
+          that.joinRoom(username, password);
+          conn.addHandler(that.logIets);
+          conn.send($pres().tree());
+          //that.sendTest();
+          that.fire('logged-in');
+          that.connected = true;
+          that.selected = 1;
+        } else if (status === Strophe.Status.DISCONNECTED) {
+          console.log('--- Disconnect');
+            //$(document).trigger('disconnected');
+          //console.log('no yoooo');
+          that.fire('disconnected');
+          that.selected = 0;
+          that.error = "error!";
+          window.location = '/';
+          that.connected = false;
+        };
+      });
+
+      //console.log('Button is geklikt. User: ', username, ' Pass: ', password);
+    },
+    msg_handler_cb: function(msg){
+      var to = msg.getAttribute('to');
+      var from = msg.getAttribute('from');
+      var type = msg.getAttribute('type');
+      var elems = msg.getElementsByTagName('body');
+      var body = elems[0];
+      //console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', body);
+      return true;
+    },
+
+    pres_handler_cb: function(){
+      //console.log('--- Set presence handler');
+      return true;
+    },
+
+    roster_cb: function(){
+      //console.log('--- Set roster handler');
+      return true;
+    },
   });
 })();
 </script>
