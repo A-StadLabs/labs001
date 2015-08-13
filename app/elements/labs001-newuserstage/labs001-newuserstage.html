@@ -1,0 +1,155 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<script src="../../bower_components/node-uuid/uuid.js"></script>
+<script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+
+<dom-module id="labs001-newuserstage">
+  <style>
+    :host {
+      display: block;
+      @apply(--layout-fit);
+    }
+
+    neon-animated-pages {
+      height: 94%;
+    }
+
+    .drawerclicker {
+    width: 100%;
+    height: 6%;
+    background-color: var(--primary-green);
+    @apply(--layout-vertical);
+    @apply(--layout-start);
+  }
+/*
+  .drawerclicker img {
+    width: 100%;
+    height: 100%;
+
+  }
+*/
+
+  .drawer {
+    background-color: var(--primary-green);
+    height: 100%;
+    padding: 10px;
+    box-sizing:border-box;
+  }
+
+  .drawer p,h2,h3 {
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .drawerbtn {
+    cursor: pointer;
+    margin: 6px 0px 0px 6px;
+  }
+
+  </style>
+  <template>
+  <paper-drawer-panel  force-narrow="true">
+    <div drawer class="drawer">
+      <h2>Dit is de drawer</h2>
+    </div>
+    <div main>
+      <div class="drawerclicker">
+        <img paper-drawer-toggle class="drawerbtn greenback" src="../../images/a_wit-rgb.svg">
+        <span class="flex"></span>
+      </div>
+
+      <neon-animated-pages id="pages" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+
+      <!-- Neon 0 -->
+      <neon-animatable>
+        <dp-pin on-yes="toggleDrawer" on-pin-entered="naarPin2" pin="{{pin1}}" titel="Geef een pincode in." error="{{error}}">
+        </dp-pin>
+      </neon-animatable>
+
+      <!-- Neon 1 -->
+      <neon-animatable>
+        <dp-pin on-yes="toggleDrawer" on-pin-entered="naarPinCheck" pin="{{pin2}}" titel="Herhaal de pincode." error="{{error}}">
+        </dp-pin>
+      </neon-animatable>
+
+      <!-- Neon 2 -->
+      <neon-animatable>
+        <h1>User wordt aangemaakt</h1>
+        <iron-localstorage id="localstorage" name="labs001-user">
+        </iron-localstorage>
+      </neon-animatable>
+
+      <!-- Neon 3 -->
+      <neon-animatable>
+        <h1>Registratie is in orde!</h1>
+        <a href="/">Ga verder</a>
+      </neon-animatable>
+
+    </neon-animated-pages>
+  </div>
+  </paper-drawer-panel>
+  </template>
+</dom-module>
+<script>
+(function() {
+  Polymer({
+    is: 'labs001-newuserstage',
+
+    properties: {
+      foo: {
+        type: String,
+        value: 'bar',
+        notify: true
+      },
+      selected: {
+        type: Number,
+        observer: "_selection"
+      }
+    },
+
+    ready: function(){
+      this.selected = 0;
+      this.entryAnimation = 'slide-from-right-animation';
+      this.exitAnimation = 'slide-left-animation';
+    },
+
+    naarPin2: function(){
+      this.selected = 1;
+    },
+
+    naarPinCheck: function(){
+      if(this.pin1==this.pin2){
+        this.selected = 2;
+      } else {
+        this.error = "Pins komen niet overeen.";
+        this.selected = 0;
+      };
+    },
+
+    _selection: function(){
+      if(this.selected==2){
+        console.log('--- Local user registration and encryption ---');
+        var userid = uuid.v1();
+        console.log('--- Created UUID ---');
+        var pincode = this.pin1;
+        var tmpuserid = CryptoJS.AES.encrypt(userid, pincode);
+        console.log('--- Encrypted UUID ---');
+        this.encruserid = tmpuserid.toString();
+        this.$.localstorage.value = this.encruserid;
+        console.log('--- Stored encrypted UUID in localstorage ---');
+        this.selected = 3;
+      }
+    }
+
+  });
+})();
+</script>
