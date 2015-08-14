@@ -9,6 +9,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
 
 <dom-module id="labs001-profiel">
   <style>
@@ -17,7 +21,79 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   </style>
   <template>
-    <div>Hello from <span>{{foo}}</span></div>
+    <template is="dom-if" if="{{editprofile}}">
+
+    <paper-material elevation="1">
+
+    <div class="vertical layout">
+
+    <paper-input error-message="Invalid input!" label="Voornaam" value="{{voornaam}}" placeholder="{{userobjectparsed.voornaam}}"></paper-input>
+    <paper-input error-message="Invalid input!" label="Achternaam" value="{{achternaam}}" placeholder="{{userobjectparsed.achternaam}}"></paper-input>
+    <paper-input error-message="Invalid input!" label="Straat en nummer" value="{{straatnr}}" placeholder="{{userobjectparsed.straatnr}}"></paper-input>
+    <paper-input error-message="Invalid input!" label="Postcode" value="{{postcode}}" placeholder="{{userobjectparsed.postcode}}"></paper-input>
+    <paper-input error-message="Invalid input!" label="Plaats" value="{{plaats}}" placeholder="{{userobjectparsed.plaats}}"></paper-input>
+
+    <paper-button on-click="save">
+      <iron-icon icon="icons:lock-open"></iron-icon>
+      Bewaren
+    </paper-button>
+
+    </div>
+
+    </paper-material>
+
+    </template>
+
+    <template is="dom-if" if="{{!editprofile}}">
+
+    <paper-material elevation="1">
+
+    <div class="vertical layout">
+
+    <paper-input disabled error-message="Invalid input!" label="Voornaam" value="{{userobjectparsed.voornaam}}"></paper-input>
+    <paper-input disabled error-message="Invalid input!" label="Achternaam" value="{{userobjectparsed.achternaam}}"></paper-input>
+    <paper-input disabled error-message="Invalid input!" label="Straat en nummer" value="{{userobjectparsed.straatnr}}"></paper-input>
+    <paper-input disabled error-message="Invalid input!" label="Postcode" value="{{userobjectparsed.postcode}}"></paper-input>
+    <paper-input disabled error-message="Invalid input!" label="Plaats" value="{{userobjectparsed.plaats}}"></paper-input>
+
+    <paper-button on-click="edit">
+      <iron-icon icon="icons:lock"></iron-icon>
+      Bewerken
+    </paper-button>
+
+    </div>
+
+    </paper-material>
+
+    <paper-material elevation="1">
+      <!-- <img id="qr" src="{{qrsrc}}"> -->
+      <alabs-qrcode code="{{userid}}"></alabs-qrcode>
+      
+    </paper-material>
+      
+    </paper-material>
+
+    <paper-material elevation="1">
+
+      <h3>Getuigen:</h3>
+      <template is="dom-repeat" items="{{getuigenparsed}}">
+      <p>{{item.naam}}</p>
+      </template>
+
+      <button on-click="addgetuige">add getuige</button>
+
+
+      
+    </paper-material>
+
+    <iron-localstorage 
+      name="{{userid}}"
+      id="localuserobject"
+      value="{{userobject}}"
+      on-iron-localstorage-load="_parseuserObject"
+      ></iron-localstorage>
+
+    </template>
   </template>
 </dom-module>
 <script>
@@ -30,7 +106,62 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         type: String,
         value: 'bar',
         notify: true
+      },
+      pincode: {
+        type: String
+      },
+      userid: {
+        type: String
+      },
+      userobject: {
+        type: Array,
+        observer: '_parseuserObject'
       }
+    },
+
+    ready: function(){
+      this.editprofile = false;
+    },
+
+    edit: function(){
+      this.editprofile = true;
+    },
+
+    save: function(){
+      this.editprofile = false;
+      var userDecrypted = {"voornaam": this.voornaam, 
+                            "achternaam": this.achternaam,
+                            "straatnr": this.straatnr,
+                            "postcode": this.postcode,
+                            "plaats": this.plaats
+                          };
+      console.log('decrypted: ', JSON.stringify(userDecrypted));
+      var userStringified = JSON.stringify(userDecrypted);
+      console.log('userStringified: ', userStringified);
+      var pincode = this.pincode.toString();
+      var userEncrypted = CryptoJS.AES.encrypt(userStringified, pincode);
+      console.log('userEncrypted: ', userEncrypted.toString());
+      this.userobject = userEncrypted.toString();
+    },
+
+    _parseuserObject: function(){
+      var that = this;
+      if(this.userobject==null){
+        this.save();
+      };
+      console.log('Found userobject: ',this.userobject);
+      var pincode = this.pincode.toString();
+      var decrypted = CryptoJS.AES.decrypt(this.userobject, pincode);
+      console.log("Decrypted user: ", decrypted);
+      //if(decrypted.sigBytes>=100){
+        console.log('wrong code');
+        this.dialog = false;
+        this.firstPin = '';
+      //};
+      console.log("Decr. and parsed: ", decrypted.toString(CryptoJS.enc.Utf8));
+      var decrtostring = decrypted.toString(CryptoJS.enc.Utf8);
+      console.log("JSON Parsed", JSON.parse(decrtostring));
+      this.userobjectparsed = JSON.parse(decrtostring);
     }
   });
 })();
