@@ -178,8 +178,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var type = msg.getAttribute('type');
       var elems = msg.getElementsByTagName('body');
       var body = elems[0];
-      console.log('--- ',body);
-      console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', body);
+      var bodymsg = Strophe.getText(body);
+      console.log('--- ',bodymsg);
+      console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', bodymsg);
       //logs.push({log: body});
       return true;
     },
