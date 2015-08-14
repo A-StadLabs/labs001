@@ -13,6 +13,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../alabs-qrcode/alabs-qrcode.html">
 
 <dom-module id="labs001-profiel">
   <style>
@@ -61,18 +62,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Bewerken
     </paper-button>
 
+    <paper-button on-click="_validate">
+      <iron-icon icon="icons:lock"></iron-icon>
+      Valideren
+    </paper-button>
+
     </div>
 
     </paper-material>
 
-    <paper-material elevation="1">
-      <!-- <img id="qr" src="{{qrsrc}}"> -->
-      <alabs-qrcode code="{{userid}}"></alabs-qrcode>
-      
-    </paper-material>
-      
-    </paper-material>
-
+   
     <paper-material elevation="1">
 
       <h3>Getuigen:</h3>
@@ -82,18 +81,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <button on-click="addgetuige">add getuige</button>
 
-
       
     </paper-material>
 
-    <iron-localstorage 
+    </template>
+
+    <template is="dom-if" if="{{validate}}">
+        <alabs-qrcode code="{{userid}}"></alabs-qrcode>
+    </template>
+
+      <iron-localstorage 
       name="{{userid}}"
       id="localuserobject"
       value="{{userobject}}"
       on-iron-localstorage-load="_parseuserObject"
       ></iron-localstorage>
-
-    </template>
   </template>
 </dom-module>
 <script>
@@ -121,6 +123,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     ready: function(){
       this.editprofile = false;
+      this.validate = false;
+    },
+
+    _validate: function(){
+      this.validate = true;
     },
 
     edit: function(){
