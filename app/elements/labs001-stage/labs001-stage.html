@@ -20,17 +20,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="labs001-stage">
   <style>
 
-  html, body {
+/*  html, body {
   height: 100%;
   margin: 0;
-}
-paper-scroll-header-panel {
+}*/
+
+/*paper-scroll-header-panel {
   height: 100%;
 }
-
+*/
        :host {
       display: block;
       @apply(--layout-fit);
+          background-color: var(--primary-oranje);
+
     }
 
     neon-animated-pages {
@@ -40,7 +43,7 @@ paper-scroll-header-panel {
     .drawerclicker {
     width: 100%;
     height: 6%;
-    background-color: var(--primary-green);
+    background-color: var(--primary-oranje);
     @apply(--layout-vertical);
     @apply(--layout-start);
   }
@@ -53,7 +56,7 @@ paper-scroll-header-panel {
 */
 
   .drawer {
-    background-color: var(--primary-green);
+    background-color: var(--primary-oranje);
     height: 100%;
     padding: 10px;
     box-sizing:border-box;
@@ -69,6 +72,15 @@ paper-scroll-header-panel {
     margin: 6px 0px 0px 6px;
   }
 
+  .canvas {
+    background-color: var(--primary-oranje);
+   color: white; 
+   height: 100%;
+       @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    text-align: center;
+  }
+
   </style>
   <template>
     <paper-drawer-panel  force-narrow="true">
@@ -81,19 +93,22 @@ paper-scroll-header-panel {
         <span class="flex"></span>
       </div>
 
+
+        <iron-localstorage id="localstorage" name="labs001-user" value="{{encruserid}}">
+        </iron-localstorage>
+
       <neon-animated-pages id="pages" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
       <!-- Neon 0 -->
-      <neon-animatable>
         <dp-pin on-yes="toggleDrawer" on-pin-entered="decryptUser" pin="{{pin1}}" titel="Geef jouw pincode in." error="{{error}}">
         </dp-pin>
-        <iron-localstorage id="localstorage" name="labs001-user" value="{{encruserid}}">
-        </iron-localstorage>
-      </neon-animatable>
+
 
       <!-- Neon 1 -->
       <neon-animatable>
-        Zover zijn we al. User is connected met openfire server en krijgt alles binnen. Check console log.
+      <div class="canvas">
+        <h2>Zover zijn we al. User is connected met openfire server en krijgt alles binnen. Check console log.</h2>
+      </div>
       </neon-animatable>
 
     </neon-animated-pages>

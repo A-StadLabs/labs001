@@ -17,6 +17,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     :host {
       display: block;
       @apply(--layout-fit);
+          background-color: var(--primary-green);
+
     }
 
     neon-animated-pages {
@@ -70,16 +72,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <neon-animated-pages id="pages" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
       <!-- Neon 0 -->
-      <neon-animatable>
-        <dp-pin on-yes="toggleDrawer" on-pin-entered="naarPin2" pin="{{pin1}}" titel="Geef een pincode in." error="{{error}}">
+
+        <dp-pin on-yes="toggleDrawer" on-pin-entered="naarPin2" pin="{{pin1}}" titel="Ah, nieuwe user? Geef een pincode in." error="{{error}}">
         </dp-pin>
-      </neon-animatable>
 
       <!-- Neon 1 -->
-      <neon-animatable>
         <dp-pin on-yes="toggleDrawer" on-pin-entered="naarPinCheck" pin="{{pin2}}" titel="Herhaal de pincode." error="{{error}}">
         </dp-pin>
-      </neon-animatable>
 
       <!-- Neon 2 -->
       <neon-animatable>
