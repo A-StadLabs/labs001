@@ -16,7 +16,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
 
 
-
 <dom-module id="labs001-stage">
   <style>
 
@@ -93,6 +92,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <paper-drawer-panel  force-narrow="true">
     <div drawer class="drawer">
       <h2>Dit is de drawer</h2>
+      <button on-click="_qrreader">Scan een QR code</button>
     </div>
     <div main "color">
       <div class="drawerclicker">
@@ -114,8 +114,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Neon 1 -->
       <neon-animatable pagecolor="red">
       <div class="canvas">
-        <h2>Zover zijn we al. User is connected met openfire server en krijgt alles binnen. Check console log.</h2>
-        <labs001-profiel userid="{{userid}}" pincode="{{pin1}}"></labs001-profiel>
+        <labs001-profiel userid="{{userid}}" pincode="{{pin1}}" userobject="{{userobject}}"></labs001-profiel>
+      </div>
+      </neon-animatable>
+
+      <!-- Neon 2 -->
+      <neon-animatable>
+      <div class="canvas">
+        <alabs-qr class="flex" on-got-code="gotcode"></alabs-qr>
       </div>
       </neon-animatable>
 
@@ -135,7 +141,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   var logs = [{log: "first log"}];
 
-
   Polymer({
     is: 'labs001-stage',
 
@@ -151,14 +156,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         observer: "_logLogs"
       },
 
+<<<<<<< HEAD
       pagecolor: {
         type: String,
         value: 'bar',
 
         observer: "_pageColor"
+=======
+      selected: {
+        type: Number,
+        observer: "_selectedChanged"
+>>>>>>> origin/master
       }
 
 
+    },
+
+    gotcode: function(e){
+      console.log('got code', e.detail.detail);
+      themessage = 'Twee users hebben elkaar gevonden, namelijk user '+this.userid+' en '+e.detail.detail+' en hier is mijn userobject: '+this.userobject;
+      var reply = $msg({
+        to: 'astadlabs@conference.kingflurkel.dtdns.net',
+        type: 'groupchat'
+      })
+      .cnode(Strophe.xmlElement('body', themessage)).up()
+      .c('active', {xmlns: "http://jabber.org/protocol/chatstates"});
+      conn.send(reply);
+    },
+
+    _selectedChanged: function(){
+      console.log('page selected: ', this.selected);
+      switch (this.selected) {
+        case 0:
+          this.color = 'white';
+          console.log(this.color); 
+        break;
+        case 1:
+          this.color = 'red';
+          console.log(this.color); 
+        break;
+      };
     },
 
     _logLogs: function(){
@@ -174,8 +211,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.logs = [{log: "eerste"}];
     },
 
+<<<<<<< HEAD
     _pageColor:function(){
       console.log('pagecolor is veranderd', this.pagecolor);
+=======
+    _qrreader: function(){
+      this.importHref("../elements/alabs-qr/alabs-qr.html", function(e) {
+    // e.target.import is the import document.
+      console.log('import',e);
+}, function(e) {
+  console.log('import',e);
+    // loading error
+});
+      this.selected = 2;
+>>>>>>> origin/master
     },
 
     decryptUser: function(){
