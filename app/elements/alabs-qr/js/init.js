@@ -6,13 +6,13 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 MediaStreamTrack.getSources(function(sourceInfos) {
   //var audioSource = null;
   var videoSource = null;
-  //console.log('got sources');
+  console.log('got sources');
 
   for (var i = sourceInfos.length - 1; i > 0; --i) {
     var sourceInfo = sourceInfos[i];
     if (sourceInfo && sourceInfo.kind === 'video') {
-      //console.log(sourceInfo.id, sourceInfo.label || 'camera');
-      //console.log('FACING: ', sourceInfo.facing, ' ID: ', sourceInfo.id, ' Label: ', sourceInfo.label);
+      console.log(sourceInfo.id, sourceInfo.label || 'camera');
+      console.log('FACING: ', sourceInfo.facing, ' ID: ', sourceInfo.id, ' Label: ', sourceInfo.label);
       if (!videoSource || sourceInfo.facing == "environment") {
         videoSource = sourceInfo.id;
       }
@@ -37,8 +37,9 @@ function sourceSelected(videoSource) {
   //console.log("Selected video=", videoSource)
 
   var successCallback = function(stream) {
-    //console.log('succes!!!!');
+    console.log('succes!!!!');
     var video = document.getElementById("camsource");
+    console.log(video);
     video.src = (window.URL && window.URL.createObjectURL(stream));
   };
 
@@ -50,10 +51,12 @@ function sourceSelected(videoSource) {
 }
 
 
-$(document).ready(function() {
+window.setTimeout(function() {
     if (!navigator.getUserMedia) return;
-    //startCam();
-    var cam_video_id = "camsource"
+    
+    var cam_video_id = "camsource";
+    console.log('camsource',cam_video_id);
     cam = camera(cam_video_id);
-    cam.start()
-});
+    cam.start();
+    //startCam();
+}, 2000);

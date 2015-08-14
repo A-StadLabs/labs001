@@ -13,6 +13,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="alabs-qr">
 
 <script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
+
+<script type="text/javascript" src="js/camera.js"></script>
+<script type="text/javascript" src="js/init.js"></script>
+
 <script type="text/javascript" src="js/lib/jsqrcode/grid.js"></script>
 <script type="text/javascript" src="js/lib/jsqrcode/version.js"></script>
 <script type="text/javascript" src="js/lib/jsqrcode/detector.js"></script>
@@ -32,8 +36,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <script type="text/javascript" src="js/lib/jsqrcode/databr.js"></script>
 
 <script type="text/javascript" src="js/qr.js"></script>
-<script type="text/javascript" src="js/camera.js"></script>
-<script type="text/javascript" src="js/init.js"></script>
+
+
 
   <style>
     :host {
@@ -45,6 +49,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <video id="camsource" autoplay width="320" height="240">Put your fallback message here.</video>
     <canvas id="qr-canvas" width="320" height="240" style="display:none"></canvas>
     <h1 id="qr-value"></h1>
+
   </template>
 </dom-module>
 <script>
@@ -76,8 +81,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var that = this;
 
       document.addEventListener('qrcoderead', function(e){
-        console.log('I heard you! ',e.detail);
-        y.val("qrcoderead", e.detail);
+        //console.log('I heard you! ',e.detail);
         that.codevalue = e.detail;
         that.fire('got-code', { detail: e.detail});
       });

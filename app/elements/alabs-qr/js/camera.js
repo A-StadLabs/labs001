@@ -5,11 +5,12 @@ var camera = (function(p_vid_id, p_inter, p_scale) {
 		return;
 	}
 
-	var vid_id   = p_vid_id;
+	var vid_id   = "camsource";
 	var interval = p_inter != undefined ? p_inter : 1000;
 	var scale    = p_scale != undefined ? p_scale : 0.5;
 
-    var video    = document.getElementById(vid_id);
+    var video    = document.getElementById("camsource");
+    console.log('video', video);
     var int_id   = null;
 
 	function start() {
