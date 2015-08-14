@@ -17,9 +17,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     :host {
       display: block;
       @apply(--layout-fit);
-          background-color: var(--primary-green);
+      --page-color:  var(--primary-green);
 
     }
+
+
+    .color {
+      background-color: var(--page-color);
+    }
+
 
     neon-animated-pages {
       height: 94%;
@@ -28,7 +34,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     .drawerclicker {
     width: 100%;
     height: 6%;
-    background-color: var(--primary-green);
+    background-color: var(--page-color);
     @apply(--layout-vertical);
     @apply(--layout-start);
   }
@@ -41,7 +47,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 */
 
   .drawer {
-    background-color: var(--primary-green);
+    background-color: var(--page-color);
     height: 100%;
     padding: 10px;
     box-sizing:border-box;
@@ -55,6 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   .drawerbtn {
     cursor: pointer;
     margin: 6px 0px 0px 6px;
+    height: 100%;
   }
 
   </style>
@@ -63,17 +70,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div drawer class="drawer">
       <h2>Dit is de drawer</h2>
     </div>
-    <div main>
+    <div main class="color">
       <div class="drawerclicker">
         <img paper-drawer-toggle class="drawerbtn greenback" src="../../images/a_wit-rgb.svg">
         <span class="flex"></span>
       </div>
 
-      <neon-animated-pages id="pages" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+      <neon-animated-pages id="pages" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}" class="color">
 
       <!-- Neon 0 -->
 
-        <dp-pin on-yes="toggleDrawer" on-pin-entered="naarPin2" pin="{{pin1}}" titel="Ah, nieuwe user? Geef een pincode in." error="{{error}}">
+        <dp-pin on-yes="toggleDrawer" on-pin-entered="naarPin2" pin="{{pin1}}" titel="Kies een pincode." error="{{error}}">
         </dp-pin>
 
       <!-- Neon 1 -->

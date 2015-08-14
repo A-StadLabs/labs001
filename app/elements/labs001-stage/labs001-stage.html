@@ -29,12 +29,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   height: 100%;
 }
 */
-       :host {
+    :host {
       display: block;
       @apply(--layout-fit);
-          background-color: var(--primary-red);
-
+      --page-color:  var(--primary-blue);
     }
+
+
+    .color {
+      background-color: var(--page-color);
+    }
+
+
 
     neon-animated-pages {
       height: 94%;
@@ -44,20 +50,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     .drawerclicker {
     width: 100%;
     height: 6%;
-    background-color: var(--primary-red);
+    background-color: var(--page-color);
     @apply(--layout-vertical);
     @apply(--layout-start);
   }
-/*
-  .drawerclicker img {
-    width: 100%;
-    height: 100%;
 
-  }
-*/
 
   .drawer {
-    background-color: var(--primary-red);
+    background-color: var(--page-color);
     height: 100%;
     padding: 10px;
     box-sizing:border-box;
@@ -71,16 +71,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   .drawerbtn {
     cursor: pointer;
     margin: 6px 0px 0px 6px;
+    height: 100%;
+
   }
 
   .canvas {
-    background-color: var(--primary-red);
-   color: white; 
-   height: 100%;
-       @apply(--layout-vertical);
+    background-color: var(--page-color);
+    color: white; 
+    height: 100%;
+    @apply(--layout-vertical);
     @apply(--layout-center-center);
     text-align: center;
   }
+
+
+
+
 
   </style>
   <template>
@@ -88,9 +94,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div drawer class="drawer">
       <h2>Dit is de drawer</h2>
     </div>
-    <div main>
+    <div main "color">
       <div class="drawerclicker">
-        <img paper-drawer-toggle class="drawerbtn greenback" src="../../images/a_wit-rgb.svg">
+        <img paper-drawer-toggle class="drawerbtn" src="../../images/a_wit-rgb.svg">
         <span class="flex"></span>
       </div>
 
@@ -98,20 +104,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-localstorage id="localstorage" name="labs001-user" value="{{encruserid}}">
         </iron-localstorage>
 
-      <neon-animated-pages id="pages" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+      <neon-animated-pages id="pages" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}" class="color">
 
       <!-- Neon 0 -->
-        <dp-pin on-yes="toggleDrawer" on-pin-entered="decryptUser" pin="{{pin1}}" titel="Geef jouw pincode in." error="{{error}}">
+        <dp-pin on-yes="toggleDrawer" on-pin-entered="decryptUser" pin="{{pin1}}" titel="Geef je pincode in." error="{{error}}" pagecolor="blue">
         </dp-pin>
 
 
       <!-- Neon 1 -->
-      <neon-animatable>
+      <neon-animatable pagecolor="red">
       <div class="canvas">
         <h2>Zover zijn we al. User is connected met openfire server en krijgt alles binnen. Check console log.</h2>
         <labs001-profiel userid="{{userid}}" pincode="{{pin1}}"></labs001-profiel>
       </div>
       </neon-animatable>
+
+
+<labs001-graphicstest></labs001-graphicstest>
+
 
     </neon-animated-pages>
   </div>
@@ -139,18 +149,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       logs: {
         type: Array,
         observer: "_logLogs"
+      },
+
+      pagecolor: {
+        type: String,
+        value: 'bar',
+
+        observer: "_pageColor"
       }
+
+
     },
 
     _logLogs: function(){
       console.log('logs: ', this.logs);
     },
 
+
+
     ready: function(){
       this.selected = 0;
       this.entryAnimation = 'slide-from-right-animation';
       this.exitAnimation = 'slide-left-animation';
       this.logs = [{log: "eerste"}];
+    },
+
+    _pageColor:function(){
+      console.log('pagecolor is veranderd', this.pagecolor);
     },
 
     decryptUser: function(){
