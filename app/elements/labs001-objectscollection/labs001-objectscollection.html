@@ -10,27 +10,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="labs001-graphicstest">
+<dom-module id="labs001-objectscollection">
   <style>
     :host {
       display: block;
     }
+
+    .objectcanvas {
+      height: 100%;
+      width: 100%;
+      @apply(--layout-horizontal);
+      @apply(--layout-center);
+/*      padding: 15vh 0px 0px 0px;*/
+    }
+
   </style>
   <template>
-    <div>Hello from <span>{{foo}}</span></div>
+
+
+<div class="objectcanvas">
+      <labs001-objectPERSON></labs001-objectPERSON>
+      <labs001-objectPERSON></labs001-objectPERSON>
+      <labs001-objectPERSON></labs001-objectPERSON>
+      <labs001-objectPERSON></labs001-objectPERSON>
+      <labs001-objectPERSON></labs001-objectPERSON><!--       <h2>editmode</h2> -->
+</div>
+
+
+
+
+
   </template>
   <script>
   (function() {
     Polymer({
-      is: 'labs001-graphicstest',
+      is: 'labs001-objectscollection',
 
       properties: {
-        foo: {
-          type: String,
-          value: 'bar',
-          notify: true
-        }
+
+      },
+
+
+      toIdleMode:function(){
+        this.fire('to-idle');
+
       }
+
+
     });
   })();
   </script>

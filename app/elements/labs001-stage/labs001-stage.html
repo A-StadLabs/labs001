@@ -85,8 +85,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 
-
-
   </style>
   <template>
     <paper-drawer-panel  force-narrow="true">
@@ -104,29 +102,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-localstorage id="localstorage" name="labs001-user" value="{{encruserid}}">
         </iron-localstorage>
 
-      <neon-animated-pages id="pages" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}" class="color">
+      <neon-animated-pages id="pages" selected="[[selected]]"  class="color">
 
       <!-- Neon 0 -->
-        <dp-pin on-yes="toggleDrawer" on-pin-entered="decryptUser" pin="{{pin1}}" titel="Geef je pincode in." error="{{error}}" pagecolor="blue">
+        <dp-pin on-yes="toggleDrawer" on-pin-entered="decryptUser" pin="{{pin1}}" titel="Geef je pincode in." error="{{error}}">
         </dp-pin>
 
 
       <!-- Neon 1 -->
-      <neon-animatable pagecolor="red">
+<!--       <neon-animatable>
       <div class="canvas">
         <labs001-profiel userid="{{userid}}" pincode="{{pin1}}" userobject="{{userobject}}"></labs001-profiel>
       </div>
-      </neon-animatable>
+      </neon-animatable> -->
 
       <!-- Neon 2 -->
-      <neon-animatable>
+<!--       <neon-animatable>
       <div class="canvas">
         <alabs-qr class="flex" on-got-code="gotcode"></alabs-qr>
       </div>
-      </neon-animatable>
+      </neon-animatable> -->
+
+      <labs001-objectscollection></labs001-objectscollection>
+<!--       <labs001-objecteditmode on-to-idle="_toIdle" mode="{{mode}}"></labs001-objecteditmode>
+ -->
 
 
-<labs001-graphicstest></labs001-graphicstest>
+
+
+
+
+<!-- 
+      <neon-animatable>
+      <div class="canvas">
+      <labs001-objectPERSON></labs001-objectPERSON>
+      </div>
+      </neon-animatable> -->
 
 
     </neon-animated-pages>
@@ -156,17 +167,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         observer: "_logLogs"
       },
 
-<<<<<<< HEAD
-      pagecolor: {
-        type: String,
-        value: 'bar',
 
-        observer: "_pageColor"
-=======
       selected: {
         type: Number,
         observer: "_selectedChanged"
->>>>>>> origin/master
       }
 
 
@@ -188,14 +192,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       console.log('page selected: ', this.selected);
       switch (this.selected) {
         case 0:
-          this.color = 'white';
-          console.log(this.color); 
+          this.color = 'var(--primary-red)';
+          // console.log(this.color); 
         break;
         case 1:
-          this.color = 'red';
-          console.log(this.color); 
+          this.color = 'var(--light-grijs)';
+          // console.log(this.color); 
+                    this.mode = 'idlemode';
+                              // console.log(this.mode); 
+
+
+        break;
+        case 2:
+          this.color = 'var(--light-grijs)';
+          this.mode = 'editmode';
+
+          // console.log(this.color); 
+                    // console.log(this.mode); 
+
         break;
       };
+
+
+        this.customStyle['--page-color'] = this.color;
+        this.updateStyles();
     },
 
     _logLogs: function(){
@@ -211,10 +231,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.logs = [{log: "eerste"}];
     },
 
-<<<<<<< HEAD
-    _pageColor:function(){
-      console.log('pagecolor is veranderd', this.pagecolor);
-=======
+
     _qrreader: function(){
       this.importHref("../elements/alabs-qr/alabs-qr.html", function(e) {
     // e.target.import is the import document.
@@ -224,7 +241,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // loading error
 });
       this.selected = 2;
->>>>>>> origin/master
     },
 
     decryptUser: function(){
@@ -322,6 +338,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       //console.log('--- Set roster handler');
       return true;
     },
+
+
+    _toEdit:function(){
+      this.selected = 2;
+      this.objectheight = '190px';
+      this.objectwidth = '340px';
+    },
+
+    _toIdle:function(){
+      this.selected = 1;
+      this.objectheight = '80px';
+      this.objectwidth = '170px';
+    }
+
+
   });
 })();
 </script>
