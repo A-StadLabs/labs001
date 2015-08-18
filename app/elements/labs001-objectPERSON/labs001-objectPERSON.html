@@ -12,26 +12,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/neon-animation/neon-animatable-behavior.html">
 <link rel="import" href="../../bower_components/neon-animation/neon-animatable.html">
 <link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
-
-
 <link rel="import" href="../editout-animation.html">
 <link rel="import" href="../editin-animation.html">
+
+
+<!-- Dit is het eigenlijke object zelf.
+In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar uitgelijnd.
+ -->
+
 
 <dom-module id="labs001-objectPERSON">
   <style>
     :host {
       display: block;
-      position: relative;
+
+        position: relative;
       --object-width: 190px;
       --object-height: 420px;
+
+
+/*            @apply(--layout-horizontal);
+            @apply(--layout-center-center);*/
+
+
+            background-color: red;
     }
 
 
+.object {
+      display: block;
+      border: 2px solid black;
 
-/*    .persontotal {
+
+}
+
+
+    .persontotal {
       width: var(--object-width);
       height: var(--object-height);
-    }*/
+    }
 
 
     .drawings {
@@ -42,6 +61,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     .fixit {
       position: absolute;
+    }
+
+
+
+
+    neon-animated-pages {
+      height: 100%;
+    }
+
+    .canvas {
+      background-color: yellow;
+      border: 1px solid red;
+      width: 100px;
+      height: 75px;
     }
 
 
@@ -79,28 +112,61 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
 
-#tester {
-  background-color: red;
-  height: 20px;
-  width: 20px;
-    margin: 0px;
-
-}
 
 
-.blue {
-     fill: var(--primary-blue);
 
-}
+
+/* TESTSHIZZLE */
+
+    #tester {
+      background-color: red;
+      height: 20px;
+      width: 20px;
+        margin: 0px;
+
+    }
+
+
+    .blue {
+         fill: var(--primary-blue);
+
+    }
+
+
+
+
+
+
+
+
 
 
   </style>
   <template>
-<!-- <div id="tester"></div>
- -->    <div class="persontotal" id="persontotal" on-click="_SwitchModes">
+<!-- <div id="tester"></div> -->    
 
 
-    <!--SNIT -->
+
+
+<!-- <div class="object">
+<h2 on-click="_FireNext">test</h2>
+
+</div> -->
+
+
+
+
+
+
+
+
+    
+
+
+
+    <div class="persontotal" id="persontotal" on-click="_SwitchModes">
+
+
     <div class="snit fixit">
         <svg class="drawings"  version="1.1" id="snit_-_3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
            viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
@@ -115,7 +181,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
 
 
-    <!--FACE -->
     <div class="face fixit">
         <svg class="drawings" version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
            viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
@@ -131,10 +196,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 
-    <!--HEAD -->
     <div class="head fixit">
-<!--       <img class="testsvg" src="../../images/M-gezicht2.svg" alt="Kiwi standing on oval">
- -->
+
         <svg  class="drawings" version="1.1" id="BALD" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
         <path class="blue" d="M156.686,122.724c1.4-9.476,4.689-16.967,3.145-35.637c-1.023-12.361-11.012-39.508-44.454-47.646
@@ -150,7 +213,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 
-    <!--TOP -->
     <div class="top fixit">
         <svg class="drawings" version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
            viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
@@ -166,7 +228,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
 
 
-    <!--BOTTOM -->
     <div class="bottom fixit">
       <svg class="drawings" version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
@@ -180,7 +241,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </svg>
     </div>
 
-    <!--SHOES -->
     <div class="shoes fixit">
       <svg class="drawings" version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
@@ -201,11 +261,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
 
 
-
-
-
-
-    <!--BODY -->
     <div class="body">
       <svg class="drawings" version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
@@ -235,6 +290,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
     </div>
+ 
   </template>
   <script>
   (function() {
@@ -295,22 +351,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         case true:
           console.log('NU EDIT?????????????????');
           // this.playAnimation('editin'); 
-          this.hoogte = '420px';
+          // this.hoogte = '420px';
         break;
         case false:
           console.log('NU ILDE !!!!!!!!!!!!!!!!!!!'); 
           // this.playAnimation('editout'); 
-          this.hoogte = '280px';
+          // this.hoogte = '280px';
         break;
       };
-        this.customStyle['--object-height'] = this.hoogte;
-        this.updateStyles();
+        // this.customStyle['--object-height'] = this.hoogte;
+        // this.updateStyles();
     },
 
 
     _SwitchModes:function(){
       this.editmode = !this.editmode;
-    }
+      this.fire('next');
+
+    },
+
+
+
+    // _FireNext:function() {
+    //   this.fire('next');
+    // }
+
 
 
     });

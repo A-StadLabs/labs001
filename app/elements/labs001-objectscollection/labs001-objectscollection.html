@@ -10,30 +10,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
+
+<!-- Dit is de collectie van al je objecten.
+Het is ook de eerste page van de 'objectcanvas'.
+In de tweede pagina van de objectcanvas komen we in een editmode van het hier-geklikte object. -->
+
+
 <dom-module id="labs001-objectscollection">
   <style>
     :host {
       display: block;
     }
 
-    .objectcanvas {
+    .objectscollection {
+
       height: 100%;
       width: 100%;
       @apply(--layout-horizontal);
       @apply(--layout-center);
+/*      background-color: blue;*/
 /*      padding: 15vh 0px 0px 0px;*/
     }
+
+
+    neon-animated-pages {
+      height: 100%;
+    }    
 
   </style>
   <template>
 
 
-<div class="objectcanvas">
-      <labs001-objectPERSON></labs001-objectPERSON>
-      <labs001-objectPERSON></labs001-objectPERSON>
-      <labs001-objectPERSON></labs001-objectPERSON>
-      <labs001-objectPERSON></labs001-objectPERSON>
-      <labs001-objectPERSON></labs001-objectPERSON><!--       <h2>editmode</h2> -->
+<div class="objectscollection">
+
+
+<!--       HIER KAN DAN EEN REPEATER KOMEN (al dan niet met het type object als attr.?)     -->
+
+      <labs001-objectPERSON on-next="_Next"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next"></labs001-objectPERSON>
+
+
 </div>
 
 
@@ -51,8 +69,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
 
+        ready: function(){
+      // this.$.objpages.selected = 0;
+      //       this.entryAnimation = 'slide-from-right-animation';
+      // this.exitAnimation = 'slide-left-animation';
+
+    },
+
+
       toIdleMode:function(){
         this.fire('to-idle');
+
+      },
+
+      _Next: function() {
+        console.log ("GEKLIKKERD !!!!!!");
+        this.fire('to-edit');
+        // this.$.objpages.selected = this.$.objpages.selected + 1;
 
       }
 

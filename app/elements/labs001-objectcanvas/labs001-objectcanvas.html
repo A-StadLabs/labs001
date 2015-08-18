@@ -1,0 +1,110 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+
+<!-- Hier gebeurt alles eens je voorbij de pin bent.
+Na de pin land je hier, en begint er een nieuwe animated-pages set met daarin:
+  1. alle objecten verzameld naast mekaar
+  2. een editstate van het geklikte object (geklikt uit 1.)
+  3. add-menu, om nieuwe objecten toe te voegen -->
+  
+
+<dom-module id="labs001-objectcanvas">
+  <style>
+    :host {
+      display: block;
+    }
+
+    .objectcanvas {
+
+      height: 100%;
+      width: 100%;
+/*      @apply(--layout-horizontal);
+      @apply(--layout-center-center);*/
+      background-color: blue;
+/*      padding: 15vh 0px 0px 0px;*/
+    }
+
+
+    neon-animated-pages {
+      height: 100%;
+    }    
+
+  </style>
+  <template>
+
+
+
+<div class="objectcanvas">
+
+    <neon-animated-pages id="objpages" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+
+    
+      <labs001-objectscollection on-to-edit="toEdit"></labs001-objectscollection>
+
+      <neon-animatable>
+      <div class="canvas">
+      <h1>22222</h1>
+      </div>
+      </neon-animatable>
+
+
+    </neon-animated-pages>
+
+</div>
+
+
+
+
+
+
+  </template>
+  <script>
+  (function() {
+    Polymer({
+      is: 'labs001-objectcanvas',
+
+      properties: {
+
+      },
+
+
+        ready: function(){
+      this.$.objpages.selected = 0;
+      this.entryAnimation = 'slide-from-right-animation';
+      this.exitAnimation = 'slide-left-animation';
+
+    },
+
+
+      // toIdleMode:function(){
+      //   this.fire('to-idle');
+
+      // },
+
+      toEdit: function(){
+
+      this.$.objpages.selected = 1;
+      },
+
+
+      _Next: function() {
+        console.log
+        this.$.objpages.selected = this.$.objpages.selected + 1;
+
+      }
+
+
+    });
+  })();
+  </script>
+</dom-module>
