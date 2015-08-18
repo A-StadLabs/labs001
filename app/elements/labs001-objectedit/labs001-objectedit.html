@@ -36,11 +36,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="editcanvas">
 
 <!--  Hello from <span>{{obj}}</span> -->
-      <labs001-objectPERSON on-prev="_Prev" obj="{{obj}}" topcolor="{{topcolor}}" mode="edit"></labs001-objectPERSON>
+      <labs001-objectPERSON on-prev="_Prev" obj="{{obj}}" topcolor="{{topcolor}}" newcolor="{{newcolor}}" mode="edit"></labs001-objectPERSON>
 
     <paper-input-container no-label-float>
     <label class="centertexting">kleurtje?</label>
-    <input autofocus class="centertexting" is="iron-input" bind-value="{{topcolor}}" >
+    <input autofocus class="centertexting" is="iron-input" bind-value="{{newcolor}}" >
     </paper-input-container>
 
     </div>
@@ -72,10 +72,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _Prev: function(e) {
         // console.log ("Is het deze dan???", e.target.attributes[1].value);
-        this.fire('to-idle');
+        this.fire('to-idle', this.obj);
         // console.log('WELK OBJECT HGEBBEN WE HIER????' , this.obj , 'EN WELKE KLEUR???' , this.topcolor);
         // console.log(e.target);
-        // console.log('KGAAANEKIK DAN DE KLEUR GAAN VERANDEREN E');
+        console.log('Dit komt uit de edit:' , this.obj , this.newcolor);
 
       }
 

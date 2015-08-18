@@ -174,13 +174,12 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
 
 
-    
+
 
 
 
     <div class="persontotal" id="persontotal" on-click="_SwitchModes">
-<!--       <p>{{mode}}</p>
- -->
+
     <div class="snit fixit">
         <svg class="drawings"  version="1.1" id="snit_-_3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
            viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
@@ -304,7 +303,8 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
 
     </div>
- 
+           <p>{{obj}}</p>
+
   </template>
   <script>
   (function() {
@@ -328,8 +328,16 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
       topcolor: {
         type: String,
+        notify: true
+        // observer: "_ColorsUpdate"
+      },
+
+
+      newcolor: {
+        type: String,
+        value:'',
         notify: true,
-        observer: "_ColorsUpdate"
+        observer: "_NewColorUpdate"
       },
 
 
@@ -363,13 +371,11 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
       },
 
       ready:function() {
-      this._ColorsUpdate();
+      // this._ColorsUpdate();
       },
 
 
-
-
-    _ColorsUpdate: function(){
+    _NewColorUpdate: function(){
 
       // switch (this.obj) {
       //   case '1':
@@ -388,11 +394,19 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
       //   break;
       // };
 
+      console.log ('de nieuwe kleur is:' , this.newcolor);
+      this.topcolor = this.newcolor;
+      console.log ('omgezet dus ook:' , this.topcolor);
 
-      this.customStyle['--this-topcolor'] = this.topcolor;
-      this.updateStyles();
+      this._ColorsUpdate();
 
-    },  
+    },
+
+
+    _ColorsUpdate: function(){
+        this.customStyle['--this-topcolor'] = this.topcolor;
+        this.updateStyles();
+    },
 
 
 
@@ -411,25 +425,16 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
     _SwitchModes:function(){
 
+      this._ColorsUpdate();
+
+
       if (this.mode == 'idle') {
           this.fire('next');
       };
-
       if (this.mode == 'edit') {
           this.fire('prev');
       };
-      // this.editmode = !this.editmode;
-        // this.fire('next');
-
-    },
-
-
-
-    // _FireNext:function() {
-    //   this.fire('next');
-    // }
-
-
+    }
 
     });
   })();
