@@ -70,9 +70,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
 
-      _Prev: function() {
+      _Prev: function(e) {
         // console.log ("Is het deze dan???", e.target.attributes[1].value);
         this.fire('to-idle');
+        // console.log('WELK OBJECT HGEBBEN WE HIER????' , this.obj , 'EN WELKE KLEUR???' , this.topcolor);
+        // console.log(e.target);
+        // console.log('KGAAANEKIK DAN DE KLEUR GAAN VERANDEREN E');
+
       }
 
 

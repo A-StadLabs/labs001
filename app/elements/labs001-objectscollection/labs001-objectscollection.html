@@ -26,6 +26,7 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 
       height: 100%;
       width: 100%;
+      padding: 0px 10vw 0px 10vw;
       @apply(--layout-horizontal);
       @apply(--layout-center);
 /*      background-color: blue;*/
@@ -37,6 +38,13 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
       height: 100%;
     }    
 
+
+    labs001-objectPERSON {
+      margin: 0px 10vw 0px 10vw;
+    }
+
+
+
   </style>
   <template>
 
@@ -46,10 +54,10 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 
 <!--       HIER KAN DAN EEN REPEATER KOMEN (al dan niet met het type object als attr.?)     -->
 
-      <labs001-objectPERSON on-next="_Next" obj="1" topcolor="red" mode="idle"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="2" topcolor="green" mode="idle"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="3" topcolor="black" mode="idle"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="4" topcolor="white" mode="idle"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" topcolor="{{topcolor}}"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="2" mode="idle" topcolor="{{topcolor}}"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="3" mode="idle" topcolor="{{topcolor}}"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="4" mode="idle" topcolor="{{topcolor}}"></labs001-objectPERSON>
 
 
 </div>
@@ -77,7 +85,6 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 
 
         ready: function(){
-          this.topcolor = "red";
 
       // this.$.objpages.selected = 0;
       //       this.entryAnimation = 'slide-from-right-animation';
@@ -93,8 +100,7 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
       _Next: function(e,detail,sender) {
         // console.log ("Is het deze dan???", e.target.attributes[1].value);
         this.fire('to-edit', {  detail1:e.target.attributes[0].value ,
-                                detail2:e.target.attributes[1].value , 
-                                detail3:e.target.attributes[2].value
+                                detail2:e.target.attributes[1].value  
                               });
       }
 
