@@ -46,10 +46,10 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 
 <!--       HIER KAN DAN EEN REPEATER KOMEN (al dan niet met het type object als attr.?)     -->
 
-      <labs001-objectPERSON on-next="_Next"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="1"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="2"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="3"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="4"></labs001-objectPERSON>
 
 
 </div>
@@ -82,8 +82,8 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 
       },
 
-      _Next: function() {
-        console.log ("GEKLIKKERD !!!!!!");
+      _Next: function(e) {
+        console.log ("GEKLIKKERD !!!!!!", e.detail.item.getAttribute("obj"));
         this.fire('to-edit');
         // this.$.objpages.selected = this.$.objpages.selected + 1;
 

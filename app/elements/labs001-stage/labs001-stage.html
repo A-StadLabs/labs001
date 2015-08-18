@@ -122,21 +122,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
       </neon-animatable> -->
 
-      <labs001-objectcanvas></labs001-objectcanvas>
-<!--       <labs001-objecteditmode on-to-idle="_toIdle" mode="{{mode}}"></labs001-objecteditmode>
- -->
+      
 
+      <!-- COLLECTIE VAN ALLES -->
+      <labs001-objectscollection on-to-edit="_toEdit"></labs001-objectscollection>
+      
 
+      <!-- EDITSTATE VAN GEKLIKT OBJECT -->
 
-
-
-
-<!-- 
       <neon-animatable>
       <div class="canvas">
-      <labs001-objectPERSON></labs001-objectPERSON>
+        <h2>editstate hier</h2>
       </div>
-      </neon-animatable> -->
+      </neon-animatable>
+
+
+
+
+
+
+
 
 
     </neon-animated-pages>
@@ -341,8 +346,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _toEdit:function(){
       this.selected = 2;
-      this.objectheight = '190px';
-      this.objectwidth = '340px';
+      // this.objectheight = '190px';
+      // this.objectwidth = '340px';
     },
 
     _toIdle:function(){

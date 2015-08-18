@@ -16,7 +16,7 @@ Na de pin land je hier, en begint er een nieuwe animated-pages set met daarin:
   1. alle objecten verzameld naast mekaar
   2. een editstate van het geklikte object (geklikt uit 1.)
   3. add-menu, om nieuwe objecten toe te voegen -->
-  
+
 
 <dom-module id="labs001-objectcanvas">
   <style>
@@ -52,7 +52,7 @@ Na de pin land je hier, en begint er een nieuwe animated-pages set met daarin:
       <labs001-objectscollection on-to-edit="toEdit"></labs001-objectscollection>
 
       <neon-animatable>
-      <div class="canvas">
+      <div class="canvas" on-click="_Prev">
       <h1>22222</h1>
       </div>
       </neon-animatable>
@@ -92,7 +92,6 @@ Na de pin land je hier, en begint er een nieuwe animated-pages set met daarin:
       // },
 
       toEdit: function(){
-
       this.$.objpages.selected = 1;
       },
 
@@ -100,7 +99,10 @@ Na de pin land je hier, en begint er een nieuwe animated-pages set met daarin:
       _Next: function() {
         console.log
         this.$.objpages.selected = this.$.objpages.selected + 1;
+      },
 
+      _Prev: function(){
+        this.$.objpages.selected = this.$.objpages.selected - 1;
       }
 
 
