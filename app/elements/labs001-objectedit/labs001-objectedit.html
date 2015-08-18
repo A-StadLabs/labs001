@@ -1,0 +1,84 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="labs001-objectedit">
+  <style>
+    :host {
+      display: block;
+    }
+
+    .editcanvas {
+/*      background-color: red;*/
+      width: 100%;
+      height: 100%;
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+    }
+
+    labs001-objectPERSON {
+      border: 1px solid black;
+    }
+
+
+  </style>
+  <template>
+
+
+    <div class="editcanvas">
+
+<!--  Hello from <span>{{obj}}</span> -->
+      <labs001-objectPERSON on-prev="_Prev" obj="{{obj}}" topcolor="{{topcolor}}" mode="edit"></labs001-objectPERSON>
+
+    <paper-input-container no-label-float>
+    <label class="centertexting">kleurtje?</label>
+    <input autofocus class="centertexting" is="iron-input" bind-value="{{topcolor}}" >
+    </paper-input-container>
+
+    </div>
+
+
+  </template>
+  <script>
+  (function() {
+    Polymer({
+      is: 'labs001-objectedit',
+
+
+      behaviors: [
+      Polymer.NeonAnimatableBehavior,
+      Polymer.NeonAnimationRunnerBehavior
+      ],
+
+      properties: {
+        foo: {
+          type: String,
+          value: 'bar',
+          notify: true
+        }
+      },
+
+      ready: function(){
+      },
+
+
+      _Prev: function() {
+        // console.log ("Is het deze dan???", e.target.attributes[1].value);
+        this.fire('to-idle');
+      }
+
+
+
+
+    });
+  })();
+  </script>
+</dom-module>

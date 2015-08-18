@@ -46,10 +46,10 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 
 <!--       HIER KAN DAN EEN REPEATER KOMEN (al dan niet met het type object als attr.?)     -->
 
-      <labs001-objectPERSON on-next="_Next" obj="1"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="2"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="3"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="4"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="1" topcolor="red" mode="idle"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="2" topcolor="green" mode="idle"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="3" topcolor="black" mode="idle"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="4" topcolor="white" mode="idle"></labs001-objectPERSON>
 
 
 </div>
@@ -64,16 +64,24 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
     Polymer({
       is: 'labs001-objectscollection',
 
+
+      behaviors: [
+      Polymer.NeonAnimatableBehavior,
+      Polymer.NeonAnimationRunnerBehavior
+      ],
+
+
       properties: {
 
       },
 
 
         ready: function(){
+          this.topcolor = "red";
+
       // this.$.objpages.selected = 0;
       //       this.entryAnimation = 'slide-from-right-animation';
       // this.exitAnimation = 'slide-left-animation';
-
     },
 
 
@@ -82,11 +90,12 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 
       },
 
-      _Next: function(e) {
-        console.log ("GEKLIKKERD !!!!!!", e.detail.item.getAttribute("obj"));
-        this.fire('to-edit');
-        // this.$.objpages.selected = this.$.objpages.selected + 1;
-
+      _Next: function(e,detail,sender) {
+        // console.log ("Is het deze dan???", e.target.attributes[1].value);
+        this.fire('to-edit', {  detail1:e.target.attributes[0].value ,
+                                detail2:e.target.attributes[1].value , 
+                                detail3:e.target.attributes[2].value
+                              });
       }
 
 

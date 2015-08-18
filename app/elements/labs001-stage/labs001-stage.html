@@ -124,21 +124,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       
 
+
+
+
+
       <!-- COLLECTIE VAN ALLES -->
       <labs001-objectscollection on-to-edit="_toEdit"></labs001-objectscollection>
       
 
       <!-- EDITSTATE VAN GEKLIKT OBJECT -->
-
-      <neon-animatable>
-      <div class="canvas">
-        <h2>editstate hier</h2>
-      </div>
-      </neon-animatable>
-
-
-
-
+      <labs001-objectedit obj="{{obj}}" topcolor="{{topcolor}}" on-to-idle="_toIdle"></labs001-objectedit>
 
 
 
@@ -193,7 +188,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _selectedChanged: function(){
-      console.log('page selected: ', this.selected);
+      // console.log('page selected: ', this.selected);
       switch (this.selected) {
         case 0:
           this.color = 'var(--primary-red)';
@@ -344,16 +339,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
 
-    _toEdit:function(){
+    _toEdit:function(e){
       this.selected = 2;
+      console.log(e.detail.detail1 , e.detail.detail2 , e.detail.detail3 , 'VANUIT DIE GEKKE IDLE-STATE !!!');
+      this.obj = e.detail.detail1;
+      this.topcolor = e.detail.detail2;
+      this.mode = e.detail.detail3;
+
+
       // this.objectheight = '190px';
       // this.objectwidth = '340px';
     },
 
     _toIdle:function(){
       this.selected = 1;
-      this.objectheight = '80px';
-      this.objectwidth = '170px';
+      // console.log(e.detail.detail1 , e.detail.detail2 , e.detail.detail3 , 'VANUIT DIE GEKKE EDIT-STATE !!!!!!!');
+      // this.obj = e.detail.detail1;
+      // this.topcolor = e.detail.detail2;
+      // this.mode = e.detail.detail3;
+
+      // this.objectheight = '80px';
+      // this.objectwidth = '170px';
     }
 
 
