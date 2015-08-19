@@ -34,8 +34,11 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
       --this-shoescolor: var(--primary-purple);
       --this-bodycolor: var(--primary-lightblue);
 
-      --object-width: 190px;
-      --object-height: 420px;
+      --object-width: 160px;
+      --object-height: 350px;
+
+
+      --square-seize: 100px;
     }
     /* Colors */
 
@@ -64,17 +67,10 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
     }
 
 
-    .persontotal {
+    .persontotal svg {
       width: var(--object-width);
       height: var(--object-height);
     }
-
-
-    .drawings {
-      width: var(--object-width);
-      height: var(--object-height);
-    }
-
 
     .fixit {
       position: absolute;
@@ -116,7 +112,7 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
       z-index: 50;
     }
     .body {
-      z-index: 0;
+      z-index: 10;
     }
 
 
@@ -125,15 +121,6 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
 
 /* TESTSHIZZLE */
-
-    #tester {
-      background-color: red;
-      height: 20px;
-      width: 20px;
-        margin: 0px;
-
-    }
-
 
     .blue {
          fill: var(--primary-purple);
@@ -149,7 +136,11 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
 
 
-
+    .redsquare {
+      width: var(--square-seize);
+      height: var(--square-seize);
+      background-color: red;
+    }
 
 
 
@@ -157,31 +148,23 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
   </style>
   <template>
-<!-- <div id="tester"></div> -->    
 
 
+<!--     <div class="redsquare" on-click="_SwitchModes"><span>{{mode}}</span></div>
+ -->
 
 
-<!-- <div class="object">
-<h2 on-click="_FireNext">test</h2>
+     <div class="persontotal" id="persontotal" on-click="_SwitchModes">
 
-</div> -->
+    <iron-localstorage 
+      name="labs001-usercolor" 
+      value="{{usercolor}}"
+      on-iron-localstorage-load="_ColorsUpdate">
+    </iron-localstorage>
 
-
-
-
-
-
-
-
-
-
-
-
-    <div class="persontotal" id="persontotal" on-click="_SwitchModes">
 
     <div class="snit fixit">
-        <svg class="drawings"  version="1.1" id="snit_-_3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        <svg  version="1.1" id="snit_-_3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
            viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
         <path class="snitcolor" d="M29.669,123.806c0,0-0.467-21.897-1.477-29.099c-1.078-7.705,1.201-25.727,6.883-33.508
           c5.68-7.781,15.309-21.35,39.396-24.271c39.844-4.831,63.557-8.969,66.149-23.234c3.139,26.237-3.811,31.623-3.811,31.623
@@ -195,7 +178,7 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
 
     <div class="face fixit">
-        <svg class="drawings" version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        <svg version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
            viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
         <circle fill="#000100" cx="78.487" cy="135.092" r="4.252"/>
         <circle fill="#000100" cx="111.927" cy="135.092" r="4.252"/>
@@ -211,7 +194,7 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
     <div class="head fixit">
 
-        <svg  class="drawings" version="1.1" id="BALD" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        <svg  version="1.1" id="BALD" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
         <path class="bodycolor" d="M156.686,122.724c1.4-9.476,4.689-16.967,3.145-35.637c-1.023-12.361-11.012-39.508-44.454-47.646
         c-6.543-2.328-13.586-3.607-20.928-3.607c-7.344,0-14.385,1.279-20.929,3.607c-33.442,8.139-43.431,35.285-44.454,47.646
@@ -227,7 +210,7 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
 
     <div class="top fixit">
-        <svg class="drawings" version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        <svg version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
            viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
         <g id="top_-_2">
           <path class="topcolor" d="M109.557,211.777h-2.842c0,11.171,0.221,20.658-12.043,20.658c-12.691,0-11.796-9.181-12.047-20.658h-3.841
@@ -242,7 +225,7 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
 
     <div class="bottom fixit">
-      <svg class="drawings" version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      <svg version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
       <g id="bottom_-_2">
         <path class="bottomcolor" d="M94.667,263.441c-5.205,0-15.727-1.088-15.727-1.088s3.519,14.084,4.41,21.532
@@ -255,7 +238,7 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
     </div>
 
     <div class="shoes fixit">
-      <svg class="drawings" version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      <svg version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
       <g>
         <path class="{{shoescolor}}" d="M108.952,310.37c-0.319-0.752-2.069-1.062-2.069-1.062s0.096,0.527-0.221,0.905
@@ -275,7 +258,7 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
 
     <div class="body">
-      <svg class="drawings" version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      <svg version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          viewBox="0 0 190 420" enable-background="new 0 0 190 420" xml:space="preserve">
       <g id="BODY">
         <path class="bodycolor" d="M128.164,275.002c-0.188-2.041-0.857-5.336-0.857-5.336s2.562-19.166,2.307-22.791
@@ -303,7 +286,10 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
 
     </div>
-           <p>{{obj}}</p>
+
+
+
+<!--            <p>{{obj}}</p> -->
 
   </template>
   <script>
@@ -312,13 +298,11 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
       is: 'labs001-objectPERSON',
 
 
-      behaviors: [
-      Polymer.NeonAnimatableBehavior,
-      Polymer.NeonAnimationRunnerBehavior
-      ],
+
 
 
       properties: {
+
       mode: {
         type: String,
         value: '',
@@ -326,56 +310,41 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
         observer: "_modeChanged"
       },
 
-      topcolor: {
-        type: String,
-        notify: true
-        // observer: "_ColorsUpdate"
-      },
+
+      // topcolor: {
+      //   type: String,
+      //   notify: true
+      //   observer: "_ColorsUpdate"
+      // },
 
 
-      newcolor: {
+      usercolor: {
         type: String,
         value:'',
         notify: true,
-        observer: "_NewColorUpdate"
-      },
-
-
-
-      animationConfig: {
-        value: function() {
-          return {
-
-
-            'editin': {
-              name: 'editin-animation',
-              node: this,
-              timing: {duration: 300}
-            },
-
-
-            'editout': {
-              name: 'editout-animation',
-              node: this,
-              timing: {duration: 300}
-            }
-
-          };
-        }
+        observer: "_ColorsUpdate"
       }
 
-
-
-
-
       },
+
 
       ready:function() {
-      // this._ColorsUpdate();
+      this._ColorsUpdate();
       },
 
 
-    _NewColorUpdate: function(){
+
+
+      _ColorsUpdate: function(){
+        // console.log('Er mag al eens gelogd worden' , this.usercolor);
+
+          this.customStyle['--this-topcolor'] = this.usercolor;
+          this.updateStyles();
+      },
+
+
+
+    // _NewColorUpdate: function(){
 
       // switch (this.obj) {
       //   case '1':
@@ -394,32 +363,28 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
       //   break;
       // };
 
-      console.log ('de nieuwe kleur is:' , this.newcolor);
-      this.topcolor = this.newcolor;
-      console.log ('omgezet dus ook:' , this.topcolor);
+      // console.log ('de nieuwe kleur is:' , this.newcolor);
+      // this.topcolor = this.newcolor;
+      // console.log ('omgezet dus ook:' , this.topcolor);
 
-      this._ColorsUpdate();
-
-    },
+      // this._ColorsUpdate();
 
 
-    _ColorsUpdate: function(){
-        this.customStyle['--this-topcolor'] = this.topcolor;
-        this.updateStyles();
-    },
+      // console.log('This is just A LITTLE SAMBA !!!' , this.usercolor);
+
+
+      // this.topcolor = this.usercolor;
+
+
+    // },
+
+
+
 
 
 
     _modeChanged: function(){
-      switch (this.mode) {
-        case 'edit':
-          console.log('NU EDIT?????????????????');
-
-        break;
-        case 'idle':
-          console.log('NU ILDE !!!!!!!!!!!!!!!!!!!'); 
-        break;
-      };
+      console.log(this.mode);
     },
 
 
@@ -430,9 +395,18 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
       if (this.mode == 'idle') {
           this.fire('next');
+
+          this.customStyle['--object-width'] = '160px';
+          this.customStyle['--object-height'] = '350px';
+          this.updateStyles();          
       };
       if (this.mode == 'edit') {
           this.fire('prev');
+
+          this.customStyle['--object-width'] = '190px';
+          this.customStyle['--object-height'] = '420px';
+          this.updateStyles();      
+
       };
     }
 

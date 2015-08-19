@@ -26,7 +26,7 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 
       height: 100%;
       width: 100%;
-      padding: 0px 10vw 0px 10vw;
+      padding: 0px 15vw 0px 15vw;
       @apply(--layout-horizontal);
       @apply(--layout-center);
 /*      background-color: blue;*/
@@ -40,8 +40,9 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 
 
     labs001-objectPERSON {
-      margin: 0px 10vw 0px 10vw;
+      margin: 0px 5vw 0px 5vw;
     }
+
 
 
 
@@ -54,14 +55,10 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 
 <!--       HIER KAN DAN EEN REPEATER KOMEN (al dan niet met het type object als attr.?)     -->
 
-      <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" topcolor="{{topcolor}}"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="2" mode="idle" topcolor="{{topcolor}}"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="3" mode="idle" topcolor="{{topcolor}}"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="4" mode="idle" topcolor="{{topcolor}}"></labs001-objectPERSON>
-
-
-</div>
-
+      <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" id="test"></labs001-objectPERSON>
+<!--       <labs001-objectPERSON on-next="_Next" obj="2" mode="idle" usercolor="{{usercolor}}"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="3" mode="idle" usercolor="{{usercolor}}"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="4" mode="idle" usercolor="{{usercolor}}"></labs001-objectPERSON> -->
 
 
 
@@ -73,32 +70,55 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
       is: 'labs001-objectscollection',
 
 
+      // behaviors: [
+      // Polymer.NeonAnimatableBehavior,
+      // Polymer.NeonAnimationRunnerBehavior
+      // ],
       behaviors: [
-      Polymer.NeonAnimatableBehavior,
-      Polymer.NeonAnimationRunnerBehavior
+        Polymer.NeonAnimatableBehavior
       ],
 
-
       properties: {
+
+      animationConfig: {
+        value: function() {
+          return {
+            'entry': {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this
+            },
+            'exit': [{
+              name: 'transform-animation',
+              node: this.$.test
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this
+            }]
+          };
+        }
+      }
+
 
       },
 
 
-        ready: function(){
+      ready: function(){
 
-      // this.$.objpages.selected = 0;
-      //       this.entryAnimation = 'slide-from-right-animation';
-      // this.exitAnimation = 'slide-left-animation';
-    },
+      this.sharedElements = {
+        'hero': this.$.test,
+      };
+
+      },
 
 
       toIdleMode:function(){
         this.fire('to-idle');
-
       },
 
+
       _Next: function(e,detail,sender) {
-        // console.log ("Is het deze dan???", e.target.attributes[1].value);
         this.fire('to-edit', {  detail1:e.target.attributes[0].value ,
                                 detail2:e.target.attributes[1].value  
                               });

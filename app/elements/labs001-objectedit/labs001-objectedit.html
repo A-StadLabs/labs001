@@ -24,9 +24,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       @apply(--layout-center-center);
     }
 
-    labs001-objectPERSON {
+/*    labs001-objectPERSON {
       border: 1px solid black;
-    }
+    }*/
 
 
   </style>
@@ -36,12 +36,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="editcanvas">
 
 <!--  Hello from <span>{{obj}}</span> -->
-      <labs001-objectPERSON on-prev="_Prev" obj="{{obj}}" topcolor="{{topcolor}}" newcolor="{{newcolor}}" mode="edit"></labs001-objectPERSON>
+      <labs001-objectPERSON on-prev="_Prev" obj="{{obj}}" topcolor="{{topcolor}}" usercolor="{{usercolor}}" mode="edit" id="test"></labs001-objectPERSON>
 
     <paper-input-container no-label-float>
     <label class="centertexting">kleurtje?</label>
-    <input autofocus class="centertexting" is="iron-input" bind-value="{{newcolor}}" >
+    <input autofocus class="centertexting" is="iron-input" bind-value="{{usercolor}}" >
     </paper-input-container>
+
+        <iron-localstorage id="usercolors" name="labs001-usercolor" value="{{usercolor}}">
+        </iron-localstorage>
 
     </div>
 
@@ -53,29 +56,59 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'labs001-objectedit',
 
 
+      // behaviors: [
+      // Polymer.NeonAnimatableBehavior,
+      // Polymer.NeonAnimationRunnerBehavior
+      // ],
       behaviors: [
-      Polymer.NeonAnimatableBehavior,
-      Polymer.NeonAnimationRunnerBehavior
+        Polymer.NeonAnimatableBehavior
       ],
 
       properties: {
-        foo: {
-          type: String,
-          value: 'bar',
-          notify: true
+
+
+      animationConfig: {
+        value: function() {
+          return {
+            'entry': {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this
+            },
+
+            'exit': [{
+              name: 'transform-animation',
+              // transformFrom: 'none',
+              // transformTo: 'scale(0.2,0.2)',
+              node: this.$.test
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this
+            }]
+
+
+          };
         }
+      }
+
+
+
       },
 
       ready: function(){
+      this.sharedElements = {
+        'hero': this.$.test,
+      };
+
       },
 
 
-      _Prev: function(e) {
-        // console.log ("Is het deze dan???", e.target.attributes[1].value);
-        this.fire('to-idle', this.obj);
-        // console.log('WELK OBJECT HGEBBEN WE HIER????' , this.obj , 'EN WELKE KLEUR???' , this.topcolor);
-        // console.log(e.target);
-        console.log('Dit komt uit de edit:' , this.obj , this.newcolor);
+      _Prev: function(e,detail,sender) {
+        this.fire('to-idle', {  usercolor :this.usercolor ,
+                                obj :this.obj,
+                                mode: e.target.attributes[0].value  
+                              });
 
       }
 

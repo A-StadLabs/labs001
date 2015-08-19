@@ -129,7 +129,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       <!-- COLLECTIE VAN ALLES -->
-      <labs001-objectscollection on-to-edit="_toEdit"></labs001-objectscollection>
+      <labs001-objectscollection on-to-edit="_toEdit" usercolor="{{usercolor}}"></labs001-objectscollection>
       
 
       <!-- EDITSTATE VAN GEKLIKT OBJECT -->
@@ -350,8 +350,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // this.objectwidth = '340px';
     },
 
-    _toIdle:function(){
+    _toIdle:function(e){
       this.selected = 1;
+      console.log(e.detail.usercolor , ': dat komt uit de edit');
+      this.usercolor = e.detail.usercolor;
+
       // console.log(e.detail.detail1 , e.detail.detail2 , e.detail.detail3 , 'VANUIT DIE GEKKE EDIT-STATE !!!!!!!');
       // this.obj = e.detail.detail1;
       // this.topcolor = e.detail.detail2;
