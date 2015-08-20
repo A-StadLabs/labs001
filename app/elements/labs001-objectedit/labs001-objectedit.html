@@ -14,6 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <style>
     :host {
       display: block;
+      
     }
 
     .editcanvas {
@@ -84,7 +85,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }, {
               name: 'hero-animation',
               id: 'hero',
-              fromPage: this
+              fromPage: this,
+              timing: {
+                duration: 300
+              }
             }]
 
 
@@ -97,6 +101,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       ready: function(){
+
+
       this.sharedElements = {
         'hero': this.$.test,
       };
@@ -109,6 +115,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 obj :this.obj,
                                 mode: e.target.attributes[0].value  
                               });
+
+
 
       }
 

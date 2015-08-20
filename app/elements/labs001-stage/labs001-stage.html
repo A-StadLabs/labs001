@@ -31,6 +31,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     :host {
       display: block;
       --page-color:  var(--primary-blue);
+      --secondpage-color: var(--primary-blue);
+    }
+
+
+    .canvas {
+      background-color: var(--page-color);
+      color: white; 
+      height: 100%;
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+      text-align: center;
     }
 
 
@@ -39,23 +50,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
 
-
     neon-animated-pages {
       height: 94%;
-      overflow: scroll;
     }
+
+
+
 
     .drawerclicker {
     width: 100%;
     height: 6%;
-    background-color: var(--page-color);
+    background-color: var(--secondpage-color);
     @apply(--layout-vertical);
     @apply(--layout-start);
   }
 
 
   .drawer {
-    background-color: var(--page-color);
+    background-color: var(--secondpage-color);
     height: 100%;
     padding: 10px;
     box-sizing:border-box;
@@ -73,13 +85,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   }
 
-  .canvas {
-    background-color: var(--page-color);
-    color: white; 
+
+
+
+
+
+  labs001-objectscollection {
+    background: linear-gradient(#a4e5f9 55%, white 45%);
+    overflow: scroll;
     height: 100%;
-    @apply(--layout-vertical);
-    @apply(--layout-center-center);
-    text-align: center;
   }
 
 
@@ -125,12 +139,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
 
 
-
-
-
       <!-- COLLECTIE VAN ALLES -->
+
+<!--       <neon-animatable>
+      <div class="canvas2">
       <labs001-objectscollection on-to-edit="_toEdit" usercolor="{{usercolor}}"></labs001-objectscollection>
+      </div>
+      </neon-animatable> -->
       
+      <labs001-objectscollection on-to-edit="_toEdit" usercolor="{{usercolor}}"></labs001-objectscollection>
 
       <!-- EDITSTATE VAN GEKLIKT OBJECT -->
       <labs001-objectedit obj="{{obj}}" topcolor="{{topcolor}}" on-to-idle="_toIdle"></labs001-objectedit>
@@ -191,19 +208,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // console.log('page selected: ', this.selected);
       switch (this.selected) {
         case 0:
-          this.color = 'var(--primary-red)';
+          this.color1 = 'var(--primary-red)';
+          this.color2 = 'var(--primary-red)';
           // console.log(this.color); 
         break;
         case 1:
-          this.color = 'var(--light-grijs)';
+          this.color1 = 'white';
+          this.color2 = '#a4e5f9';
           // console.log(this.color); 
-                    this.mode = 'idlemode';
-                              // console.log(this.mode); 
+          this.mode = 'idlemode';
 
 
         break;
         case 2:
-          this.color = 'var(--light-grijs)';
+          this.color1 = 'white';
+          this.color2 = '#a4e5f9';
           this.mode = 'editmode';
 
           // console.log(this.color); 
@@ -213,7 +232,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       };
 
 
-        this.customStyle['--page-color'] = this.color;
+        this.customStyle['--page-color'] = this.color1;
+        this.customStyle['--secondpage-color'] = this.color2;
         this.updateStyles();
     },
 

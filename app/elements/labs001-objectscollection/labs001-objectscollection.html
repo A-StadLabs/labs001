@@ -29,7 +29,6 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
       padding: 0px 15vw 0px 15vw;
       @apply(--layout-horizontal);
       @apply(--layout-center);
-/*      background-color: blue;*/
 /*      padding: 15vh 0px 0px 0px;*/
     }
 
@@ -56,12 +55,13 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 <!--       HIER KAN DAN EEN REPEATER KOMEN (al dan niet met het type object als attr.?)     -->
 
       <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" id="test"></labs001-objectPERSON>
-<!--       <labs001-objectPERSON on-next="_Next" obj="2" mode="idle" usercolor="{{usercolor}}"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="3" mode="idle" usercolor="{{usercolor}}"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="4" mode="idle" usercolor="{{usercolor}}"></labs001-objectPERSON> -->
+      <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
 
 
-
+</div>
 
   </template>
   <script>
@@ -94,7 +94,10 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
             }, {
               name: 'hero-animation',
               id: 'hero',
-              fromPage: this
+              fromPage: this,
+              timing: {
+                duration: 300
+              }
             }]
           };
         }
@@ -122,6 +125,9 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
         this.fire('to-edit', {  detail1:e.target.attributes[0].value ,
                                 detail2:e.target.attributes[1].value  
                               });
+        var target = e;
+        console.log(target);
+
       }
 
 
