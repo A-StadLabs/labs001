@@ -122,6 +122,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
       <labs001-objectscollection userid="{{userid}}"></labs001-objectscollection>
 
+      <labs001-renderer dataset="{{emptyProfile}}"></labs001-renderer>
+
       <neon-animatable>
       <div class="canvas">
         <alabs-qr class="flex" on-got-code="gotcode"></alabs-qr>
@@ -159,13 +161,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       selected: {
         type: Number,
         observer: "_selectedChanged"
-      }
+      },
 
+      emptyProfile: {
+        type: Object,
+        value: {
+          datasetName: "basisprofiel",
+          datasetTypes: ["titel", "string", "string"],
+          datasetLabels: ["Basisinfo", "voornaam", "naam"],
+          datasetWaarden: ["null", "Michael", "Thuy"]
+        }
+      }
 
     },
 
     gotcode: function(e){
       console.log('got code', e.detail.detail);
+      var string = e.detail.detail;
+      var commandarray = string.split(",");
+      console.log(commandarray[0],commandarray[1]);  
+      var command = commandarray[0];
+      var cuser = commandarray[1];
+      var cobject = commandarray[2];
+      switch(command){
+        case "validate":
+          break;
+        case "voidvalidation":
+          break;
+        case "getuseraccount":
+          break;
+        case "subscribe":
+          break;
+        case "getdataset":
+          console.log('Ask for dataset: ', cobject, ' send to user ', cuser);
+          break;
+        case "senddataset":
+          this.sendDataset(emptyProfile, cuser);
+          break;
+      };
       // themessage = 'Twee users hebben elkaar gevonden, namelijk user '+this.userid+' en '+e.detail.detail+' en hier is mijn userobject: '+this.userobject;
       // var reply = $msg({
       //   to: 'astadlabs@conference.kingflurkel.dtdns.net',
@@ -174,6 +207,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // .cnode(Strophe.xmlElement('body', themessage)).up()
       // .c('active', {xmlns: "http://jabber.org/protocol/chatstates"});
       // conn.send(reply);
+    },
+
+    sendDataset: function(dataset, userto){
+      var dataset = JSON.stringify(dataset);
+      themessage = 'getdataset,'+dataset;
+      var msg = $msg({
+        to: userto
+      })
+      .cnode(Strophe.xmlElement('body', themessage)).up()
+      .c('active', {xmlns: "http://jabber.org/protocol/chatstates"});
+      conn.send(msg);
     },
 
     _selectedChanged: function(){
@@ -231,7 +275,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   console.log('import',e);
     // loading error
 });
-      this.selected = 2;
+      this.selected = 3;
     },
 
     decryptUser: function(){
@@ -262,8 +306,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var elems = msg.getElementsByTagName('body');
       var body = elems[0];
       var bodymsg = Strophe.getText(body);
-      console.log('--- ',bodymsg);
-      console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', bodymsg);
+      //console.log('--- ',bodymsg);
+      //console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', bodymsg);
       //logs.push({log: body});
       switch(bodymsg){
         case "alert":
@@ -325,8 +369,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var type = msg.getAttribute('type');
       var elems = msg.getElementsByTagName('body');
       var body = elems[0];
-      console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', body);
-      console.log('ik moet zien wat de boodschap is, en eventueel een functie triggeren lokaal');
+      //console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', body);
+      //console.log('ik moet zien wat de boodschap is, en eventueel een functie triggeren lokaal');
       if(body=="alert"){
           alert('alert ontvangen');
           console.log('alert ontvangen');

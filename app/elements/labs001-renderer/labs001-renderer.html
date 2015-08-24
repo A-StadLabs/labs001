@@ -1,0 +1,73 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="labs001-renderer">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+    <div id="rendercanvas" class="layout vertical"></div>
+  </template>
+</dom-module>
+<script>
+(function() {
+  Polymer({
+    is: 'labs001-renderer',
+
+    properties: {
+      dataset: {
+        type: Object,
+        observer: "_dataset"
+      }
+    },
+
+    _dataset: function(){
+      var dataset = this.dataset;
+      console.log(dataset);
+      console.log(dataset.datasetLabels);
+      var types = dataset.datasetTypes;
+
+      for (var i = -1 + 1; i <= types.length; i++) {
+        console.log(types[i]);
+        var rendercanvas = this.$.rendercanvas;
+        switch(types[i]){
+          case "string":
+            // zet een input veld
+            console.log('RENDERER: zet een input veld string', dataset[i]);
+            var textinput = document.createElement("input");
+            textinput.placeholder = dataset.datasetLabels[i];
+            rendercanvas.appendChild(textinput);
+            break;
+          case "titel":
+            //zet een input veld
+            //console.log('RENDERER: zet een input veld number', dataset[i]);
+            var titel = document.createElement("h1");
+            titel.innerHTML = dataset.datasetLabels[i];
+            rendercanvas.appendChild(titel);
+            break;
+        }
+      };
+        //var array = dataset[i];
+        //console.log(array);
+        //var store = array.split(":");
+        //console.log(store[0], store[1]);
+        
+
+
+        
+      
+    }
+  });
+})();
+</script>
