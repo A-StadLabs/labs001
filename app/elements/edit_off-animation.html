@@ -29,7 +29,7 @@ Configuration:
 
   Polymer({
 
-    is: 'objecteditOUT-animation',
+    is: 'edit_off-animation',
 
     behaviors: [
       Polymer.NeonAnimationBehavior
@@ -39,8 +39,11 @@ Configuration:
       var node = config.node;
       this._effect = new KeyframeEffect(node, [
 
-        {'height': '30px'},
-        {'height': '20px'}
+        // {'transform': 'scale(1, 1)'},
+        // {'transform': 'scale(0.835, 0.835)'}
+
+        {'transform': 'scale(1, 1)', 'transform-origin': 'center center'},
+        {'transform': 'scale(0.835, 0.835)', 'transform-origin': 'center center'}
 
       ], this.timingFromConfig(config));
       return this._effect;

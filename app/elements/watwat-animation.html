@@ -39,8 +39,8 @@ Configuration:
       var node = config.node;
       this._effect = new KeyframeEffect(node, [
 
-        {'height': '30px'},
-        {'height': '20px'}
+        {'transform': 'scale(1, 1)'},
+        {'transform': 'scale(1.2, 1.2)'}
 
       ], this.timingFromConfig(config));
       return this._effect;

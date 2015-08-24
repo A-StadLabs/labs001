@@ -12,8 +12,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/neon-animation/neon-animation-behavior.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 
-
-
 <!--
 `<ons-animation>` animates the opacity of an element from 0 to 1.
 
@@ -31,7 +29,7 @@ Configuration:
 
   Polymer({
 
-    is: 'objecteditIN-animation',
+    is: 'edit_on-animation',
 
     behaviors: [
       Polymer.NeonAnimationBehavior
@@ -41,8 +39,8 @@ Configuration:
       var node = config.node;
       this._effect = new KeyframeEffect(node, [
 
-        {'height': '20px'},
-        {'height': '30px'}
+        {'transform': 'scale(1, 1)', 'transform-origin': 'center center'},
+        {'transform': 'scale(1.2, 1.2)', 'transform-origin': 'center center'}
 
       ], this.timingFromConfig(config));
       return this._effect;

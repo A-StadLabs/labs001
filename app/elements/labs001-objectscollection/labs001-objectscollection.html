@@ -20,10 +20,14 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
   <style>
     :host {
       display: block;
+      background: linear-gradient(#a4e5f9 55%, white 45%);
+
+      --can-scroll: scroll;
+
+      overflow: var(--can-scroll);
     }
 
     .objectscollection {
-
       height: 100%;
       width: 100%;
       padding: 0px 15vw 0px 15vw;
@@ -32,15 +36,10 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 /*      padding: 15vh 0px 0px 0px;*/
     }
 
-
-    neon-animated-pages {
-      height: 100%;
-    }    
-
-
+/*
     labs001-objectPERSON {
       margin: 0px 5vw 0px 5vw;
-    }
+    }*/
 
 
 
@@ -54,12 +53,18 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 
 <!--       HIER KAN DAN EEN REPEATER KOMEN (al dan niet met het type object als attr.?)     -->
 
-      <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" id="test"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
+<!--       <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" id="test"></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="2" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="3" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="4" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
+      <labs001-objectPERSON on-next="_Next" obj="5" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON> -->
 
+
+      <labs001-objectPERSON obj="1" usercolor="{{usercolor}}" on-scroll="_Scroll"></labs001-objectPERSON>
+<!--       <labs001-objectPERSON obj="2" usercolor="{{usercolor}}" on-scroll="_Scroll"></labs001-objectPERSON>
+      <labs001-objectPERSON obj="3" usercolor="{{usercolor}}" on-scroll="_Scroll"></labs001-objectPERSON>
+      <labs001-objectPERSON obj="4" usercolor="{{usercolor}}" on-scroll="_Scroll"></labs001-objectPERSON>
+      <labs001-objectPERSON obj="5" usercolor="{{usercolor}}" on-scroll="_Scroll"></labs001-objectPERSON> -->
 
 </div>
 
@@ -79,6 +84,13 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
       ],
 
       properties: {
+
+      canscroll: {
+        type: Boolean,
+        value: true,
+        notify: true
+      },
+
 
       animationConfig: {
         value: function() {
@@ -128,6 +140,21 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
         var target = e;
         console.log(target);
 
+      },
+
+
+
+      _Scroll:function(){
+
+      this.canscroll = !this.canscroll;
+      console.log('kan ik scrollen?:' , this.canscroll);
+      if (this.canscroll == true) {
+          this.customStyle['--can-scroll'] = 'scroll';
+      } else {
+          this.customStyle['--can-scroll'] = 'hidden';
+      };
+      
+      this.updateStyles(); 
       }
 
 
