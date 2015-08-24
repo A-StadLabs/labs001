@@ -79,6 +79,9 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
       height: var(--object-height);
     }
 
+
+
+
     .fixit {
       position: absolute;
     }
@@ -125,17 +128,17 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
     .snit {
       z-index: 9999999;
-      background-color: rgba(0,0,0,0.1);
+      background-color: rgba(0,0,0,0.1);    
       width: var(--object-width);
+      height: 90px;
+      overflow: visible;
     }
 
 
-/*    .snit svg {
-      width: var(--object-width);
-      height: 180px;
-
+    .personoptions svg {
+        width: var(--object-width);
     }
-*/
+
 
 
     .face {
@@ -196,7 +199,7 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
  -->
 
 
-     <div class="persontotal" id="persontotal" on-click="_SwitchModes">
+     <div id="persontotal" on-click="_SwitchModes">
 
     <iron-localstorage 
       name="labs001-usercolor" 
@@ -204,8 +207,7 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
       on-iron-localstorage-load="_ColorsUpdate">
     </iron-localstorage>
 
-<!-- <div class="personoptions fixit">
- -->  
+
 
 
 
@@ -293,23 +295,24 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
  -->
 
     <div class="pagez">
-      <div class="snit">
-
-<svg version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-   width="190px" height="80px" viewBox="0 0 190 180" enable-background="new 0 0 190 180" xml:space="preserve">
-<g id="snit_-_1">
-  <path fill="#008AB2" d="M29.88,123.712c0,0-0.468-20.896-1.477-28.098c-1.079-7.705,1.201-25.727,6.882-33.508
-    c5.681-7.781,16.31-22.351,40.397-25.271c19.19-2.326,33.914-2.182,45.794,1.242c12.785,3.686,21.119,11.854,24.528,14.52
-    c8.459,6.611,17.808,20.139,16.05,38.229c-1.688,17.344-1.279,33.268-1.763,33.32c-0.483,0.052-1.778-0.988-2.259-0.408
-    c-0.479,0.578-1.87,2.602-3.118,24.75c-0.295,2.574-1.785,2.658-1.761,1.369c0.865-43.611-6.076-44.486-5.752-51.994
-    c0.371-8.58,4.845-22.484-2.391-32.037c-9.558-12.619-22.736,1.805-48.74,1.805c-26.003,0-45.837-13.379-51.458-3.438
-    s-2.485,25.521-2.056,29.389c1.178,10.6-6.299,20.156-5.971,30.895c0.301,9.847,0.711,19.627,0.434,24.013
-    c-0.246,3.875-1.75,2.959-1.938,0c-1.774-27.761-3.829-25.361-3.829-25.361L29.88,123.712z"/>
-</g>
-</svg>
-
-
+      <div class="personoptions snit">
+        <svg version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           viewBox="0 0 190 180" enable-background="new 0 0 190 180" xml:space="preserve">
+        <g id="snit_-_1">
+          <path fill="#008AB2" d="M29.88,123.712c0,0-0.468-20.896-1.477-28.098c-1.079-7.705,1.201-25.727,6.882-33.508
+            c5.681-7.781,16.31-22.351,40.397-25.271c19.19-2.326,33.914-2.182,45.794,1.242c12.785,3.686,21.119,11.854,24.528,14.52
+            c8.459,6.611,17.808,20.139,16.05,38.229c-1.688,17.344-1.279,33.268-1.763,33.32c-0.483,0.052-1.778-0.988-2.259-0.408
+            c-0.479,0.578-1.87,2.602-3.118,24.75c-0.295,2.574-1.785,2.658-1.761,1.369c0.865-43.611-6.076-44.486-5.752-51.994
+            c0.371-8.58,4.845-22.484-2.391-32.037c-9.558-12.619-22.736,1.805-48.74,1.805c-26.003,0-45.837-13.379-51.458-3.438
+            s-2.485,25.521-2.056,29.389c1.178,10.6-6.299,20.156-5.971,30.895c0.301,9.847,0.711,19.627,0.434,24.013
+            c-0.246,3.875-1.75,2.959-1.938,0c-1.774-27.761-3.829-25.361-3.829-25.361L29.88,123.712z"/>
+        </g>
+        </svg>
       </div>
+
+
+
+
 <!-- 
     <neon-animated-pages id="snitpages" selected="[[selected]]" class="snit">
 
@@ -341,7 +344,7 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
 
 
-   <div class="face fixit">
+   <div class="face fixit persontotal">
         <svg version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
            viewBox="0 0 190 320" enable-background="new 0 0 190 320" xml:space="preserve">
         <circle fill="#000100" cx="78.487" cy="135.092" r="4.252"/>
@@ -354,7 +357,7 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
         </svg>
     </div>
 
-    <div class="head fixit">
+    <div class="head fixit persontotal">
 
         <svg  version="1.1" id="BALD" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          viewBox="0 0 190 320" enable-background="new 0 0 190 320" xml:space="preserve">
@@ -370,7 +373,7 @@ In deze fase is dit letterlijk het 'persoon-object', met alle svg's op mekaar ui
 
 
 
-    <div class="body">
+    <div class="body persontotal">
       <svg version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          viewBox="0 0 190 320" enable-background="new 0 0 190 320" xml:space="preserve">
       <g id="BODY">
