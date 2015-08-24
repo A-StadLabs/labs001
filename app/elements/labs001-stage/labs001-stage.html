@@ -122,10 +122,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
       <labs001-objectscollection></labs001-objectscollection>
 
-
-
-  
-
     </neon-animated-pages>
   </div>
   </paper-drawer-panel>
@@ -263,6 +259,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       console.log('--- ',bodymsg);
       console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', bodymsg);
       //logs.push({log: body});
+      switch(bodymsg){
+        case "alert":
+          alert('alert ontvangen');
+          break;
+        case "hallo":
+          var string = from + ' zegt hallo';
+          alert(string);
+          break;
+      }
+      if(bodymsg=="alert"){
+          alert('alert ontvangen');
+          console.log('alert ontvangen');
+      };
       return true;
     },
 
@@ -310,7 +319,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var type = msg.getAttribute('type');
       var elems = msg.getElementsByTagName('body');
       var body = elems[0];
-      //console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', body);
+      console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', body);
+      console.log('ik moet zien wat de boodschap is, en eventueel een functie triggeren lokaal');
+      if(body=="alert"){
+          alert('alert ontvangen');
+          console.log('alert ontvangen');
+      };
       return true;
     },
 
