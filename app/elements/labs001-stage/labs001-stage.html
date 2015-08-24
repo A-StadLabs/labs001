@@ -120,7 +120,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       
-      <labs001-objectscollection></labs001-objectscollection>
+      <labs001-objectscollection userid="{{userid}}"></labs001-objectscollection>
+
+      <neon-animatable>
+      <div class="canvas">
+        <alabs-qr class="flex" on-got-code="gotcode"></alabs-qr>
+      </div>
+      </neon-animatable>
 
     </neon-animated-pages>
   </div>
@@ -160,14 +166,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     gotcode: function(e){
       console.log('got code', e.detail.detail);
-      themessage = 'Twee users hebben elkaar gevonden, namelijk user '+this.userid+' en '+e.detail.detail+' en hier is mijn userobject: '+this.userobject;
-      var reply = $msg({
-        to: 'astadlabs@conference.kingflurkel.dtdns.net',
-        type: 'groupchat'
-      })
-      .cnode(Strophe.xmlElement('body', themessage)).up()
-      .c('active', {xmlns: "http://jabber.org/protocol/chatstates"});
-      conn.send(reply);
+      // themessage = 'Twee users hebben elkaar gevonden, namelijk user '+this.userid+' en '+e.detail.detail+' en hier is mijn userobject: '+this.userobject;
+      // var reply = $msg({
+      //   to: 'astadlabs@conference.kingflurkel.dtdns.net',
+      //   type: 'groupchat'
+      // })
+      // .cnode(Strophe.xmlElement('body', themessage)).up()
+      // .c('active', {xmlns: "http://jabber.org/protocol/chatstates"});
+      // conn.send(reply);
     },
 
     _selectedChanged: function(){

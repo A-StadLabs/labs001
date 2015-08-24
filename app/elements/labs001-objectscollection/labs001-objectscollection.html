@@ -9,7 +9,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-
+<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../alabs-qrcode/alabs-qrcode.html">
 
 <!-- Dit is de collectie van al je objecten.
 Het is ook de eerste page van de 'objectcanvas'.
@@ -59,11 +60,19 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
       de value objectpersonvalue zijn de gegevens van het manneken vb. kapsel zus, baard zo, ... -->
 
 <!--       <labs001-objectPERSON userobj="{{objectpersonvalue}}" on-scroll="_Scroll"></labs001-objectPERSON> -->
-
-<input type="text" value="{{tekstje}}">
-<h2>test? <span>{{tekstje}}</span></h2>
-
-
+<div class="layout vertical center-center">
+<p>USER: <span>{{userid}}</span></p>
+<input type="text" value="{{tekstje}}" id="textinput">
+<h2>test? <span>{{tekstje2}}</span></h2>
+<button on-click="savevalue">save</button>
+<iron-localstorage name="labs-001-object1" value="{{tekstje2}}"></iron-localstorage>
+<button on-click="verzendmodusaan">verstuur object</button>
+<template is="dom-if" if="{{verzendmodus}}">
+  <h1>Verzendmodus</h1>
+  <p>{{qrcode}}</p>
+  <alabs-qrcode code="{{qrcode}}"></alabs-qrcode>
+</template>
+</div>
 </div>
 
   </template>
@@ -87,8 +96,18 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
         type: Boolean,
         value: true,
         notify: true
+      },
+
+      userid: {
+        type: String,
+        notify: true
       }
 
+      },
+
+      savevalue: function(){
+        var val = this.$.textinput.value;
+        this.tekstje2 = val;
       },
 
 
@@ -98,6 +117,13 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
         'hero': this.$.test,
       };
 
+      this.verzendmodus = false;
+
+      },
+
+      verzendmodusaan: function(){
+        this.qrcode = 'getvalue'+','+this.userid;
+        this.verzendmodus = true;
       },
 
 
