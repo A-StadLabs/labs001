@@ -115,40 +115,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <neon-animated-pages id="pages" selected="[[selected]]"  class="color">
 
-      <!-- Neon 0 -->
         <dp-pin on-yes="toggleDrawer" on-pin-entered="decryptUser" pin="{{pin1}}" titel="Geef je pincode in." error="{{error}}">
         </dp-pin>
 
 
-      <!-- Neon 1 -->
-<!--       <neon-animatable>
-      <div class="canvas">
-        <labs001-profiel userid="{{userid}}" pincode="{{pin1}}" userobject="{{userobject}}"></labs001-profiel>
-      </div>
-      </neon-animatable> -->
-
-      <!-- Neon 2 -->
-<!--       <neon-animatable>
-      <div class="canvas">
-        <alabs-qr class="flex" on-got-code="gotcode"></alabs-qr>
-      </div>
-      </neon-animatable> -->
-
       
-
-
-      <!-- COLLECTIE VAN ALLES -->
-
-<!--       <neon-animatable>
-      <div class="canvas2">
-      <labs001-objectscollection on-to-edit="_toEdit" usercolor="{{usercolor}}"></labs001-objectscollection>
-      </div>
-      </neon-animatable> -->
-      
-      <labs001-objectscollection on-to-edit="_toEdit" usercolor="{{usercolor}}"></labs001-objectscollection>
-
-      <!-- EDITSTATE VAN GEKLIKT OBJECT -->
-      <labs001-objectedit obj="{{obj}}" topcolor="{{topcolor}}" on-to-idle="_toIdle"></labs001-objectedit>
+      <labs001-objectscollection></labs001-objectscollection>
 
 
 
@@ -295,10 +267,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
 
-    addtoarray: function(e){
-      console.log(e);
-    },
-
     login: function(username, password){
 
       console.log('--- OpenFire start login procedure for user ', username, ' with pass ', password,' ---');
@@ -354,33 +322,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     roster_cb: function(){
       //console.log('--- Set roster handler');
       return true;
-    },
-
-
-    _toEdit:function(e){
-      this.selected = 2;
-      console.log(e.detail.detail1 , e.detail.detail2 , 'VANUIT DIE GEKKE IDLE-STATE !!!');
-      this.obj = e.detail.detail1;
-      this.mode = e.detail.detail2;
-
-
-      // this.objectheight = '190px';
-      // this.objectwidth = '340px';
-    },
-
-    _toIdle:function(e){
-      this.selected = 1;
-      console.log(e.detail.usercolor , ': dat komt uit de edit');
-      this.usercolor = e.detail.usercolor;
-
-      // console.log(e.detail.detail1 , e.detail.detail2 , e.detail.detail3 , 'VANUIT DIE GEKKE EDIT-STATE !!!!!!!');
-      // this.obj = e.detail.detail1;
-      // this.topcolor = e.detail.detail2;
-      // this.mode = e.detail.detail3;
-
-      // this.objectheight = '80px';
-      // this.objectwidth = '170px';
     }
+
 
 
   });

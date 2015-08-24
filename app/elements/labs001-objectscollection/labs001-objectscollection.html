@@ -51,20 +51,15 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 <div class="objectscollection">
 
 
-<!--       HIER KAN DAN EEN REPEATER KOMEN (al dan niet met het type object als attr.?)     -->
+      <!--   HIER KOMT EEN POLYMER COMPONENT 'LABS001-USERDATA':
 
-<!--       <labs001-objectPERSON on-next="_Next" obj="1" mode="idle" usercolor="{{usercolor}}" id="test"></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="2" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="3" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="4" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON>
-      <labs001-objectPERSON on-next="_Next" obj="5" mode="idle" usercolor="{{usercolor}}" ></labs001-objectPERSON> -->
+        <labs001-userdata name="objectperson" value="{{objectpersonvalue}}"> 
+        </labs001-userdata>
+
+      de value objectpersonvalue zijn de gegevens van het manneken vb. kapsel zus, baard zo, ... -->
 
 
-      <labs001-objectPERSON obj="1" usercolor="{{usercolor}}" on-scroll="_Scroll"></labs001-objectPERSON>
-<!--       <labs001-objectPERSON obj="2" usercolor="{{usercolor}}" on-scroll="_Scroll"></labs001-objectPERSON>
-      <labs001-objectPERSON obj="3" usercolor="{{usercolor}}" on-scroll="_Scroll"></labs001-objectPERSON>
-      <labs001-objectPERSON obj="4" usercolor="{{usercolor}}" on-scroll="_Scroll"></labs001-objectPERSON>
-      <labs001-objectPERSON obj="5" usercolor="{{usercolor}}" on-scroll="_Scroll"></labs001-objectPERSON> -->
+      <labs001-objectPERSON userobj="{{objectpersonvalue}}" on-scroll="_Scroll"></labs001-objectPERSON>
 
 </div>
 
@@ -89,32 +84,7 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
         type: Boolean,
         value: true,
         notify: true
-      },
-
-
-      animationConfig: {
-        value: function() {
-          return {
-            'entry': {
-              name: 'hero-animation',
-              id: 'hero',
-              toPage: this
-            },
-            'exit': [{
-              name: 'transform-animation',
-              node: this.$.test
-            }, {
-              name: 'hero-animation',
-              id: 'hero',
-              fromPage: this,
-              timing: {
-                duration: 300
-              }
-            }]
-          };
-        }
       }
-
 
       },
 
