@@ -96,6 +96,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 
+
+
+
+
+
   </style>
   <template>
     <paper-drawer-panel  force-narrow="true">
@@ -118,13 +123,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       
-      <labs001-objectscollection userid="{{userid}}" on-open-camera="_qrreader"></labs001-objectscollection>
+<!--       <labs001-objectscollection userid="{{userid}}" on-open-camera="_qrreader"></labs001-objectscollection> -->
+
+
+      <neon-animatable>
+            <div class="canvas">
+            <button on-click="_toScanner">+</button>
+        </div>
+      </neon-animatable>
+
+
 
       <labs001-renderer dataset="{{emptyProfile}}"></labs001-renderer>
 
       <neon-animatable>
       <div class="canvas">
-        <alabs-qr class="flex" on-got-code="gotcode"></alabs-qr>
+        <alabs-qr on-got-code="gotcode"></alabs-qr>
       </div>
       </neon-animatable>
 
@@ -183,7 +197,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     gotcode: function(e){
       console.log('got code', e.detail.detail);
       var string = e.detail.detail;
-      };
+      
     },
 
     askforDataset: function(datasetname, fromwho){
@@ -233,12 +247,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     // console.log(this.mode); 
 
         break;
+        case 3:
+          this.color1 = 'grey';
+          this.color2 = 'grey';
+          // console.log(this.color); 
+                    // console.log(this.mode); 
+        break;
         case 4:
           this.color1 = 'white';
           this.color2 = 'grey';
           // console.log(this.color); 
                     // console.log(this.mode); 
-
         break;
       };
 
@@ -400,7 +419,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _toWhere:function(){
       this.selected = 1;
+    },
+
+    _toScanner: function(){
+      this.selected = 3;
     }
+
 
 
 
