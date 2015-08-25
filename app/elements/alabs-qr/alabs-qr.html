@@ -58,15 +58,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     is: 'alabs-qr',
 
     properties: {
-      foo: {
-        type: String,
-        value: 'bar',
-        notify: true
-      },
-
-      y: {
-        type: Object
-      }
+     
     },
 
 
@@ -74,14 +66,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       this.gotcode = false;
 
-
-
-      //init();
-
       var that = this;
 
       document.addEventListener('qrcoderead', function(e){
-        //console.log('I heard you! ',e.detail);
         that.codevalue = e.detail;
         that.fire('got-code', { detail: e.detail});
       });

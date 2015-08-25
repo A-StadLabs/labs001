@@ -1,70 +1,43 @@
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+<!-- A-StadLabs 2015 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
 <script src="../../bower_components/strophe.js/strophe.js"></script>
 <script src="../../bower_components/strophejs-plugins/muc/strophe.muc.js"></script>
 <script src="../../bower_components/strophe-openfire-websocket/strophe-openfire-websocket.js"></script>
-<link rel="import" href="../../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
-
 
 <dom-module id="labs001-stage">
-  <style>
+<style>
+  :host {
+    display: block;
+    --page-color:  var(--primary-blue);
+    --secondpage-color: var(--primary-blue);
+  }
 
-/*  html, body {
-  height: 100%;
-  margin: 0;
-}*/
+  .canvas {
+    background-color: var(--page-color);
+    color: white; 
+    height: 100%;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    text-align: center;
+  }
 
-/*paper-scroll-header-panel {
-  height: 100%;
-}
-*/
-    :host {
-      display: block;
-      --page-color:  var(--primary-blue);
-      --secondpage-color: var(--primary-blue);
-    }
+  .color {
+    background-color: var(--page-color);
+  }
 
+  neon-animated-pages {
+    height: 94%;
+  }
 
-    .canvas {
-      background-color: var(--page-color);
-      color: white; 
-      height: 100%;
-      @apply(--layout-vertical);
-      @apply(--layout-center-center);
-      text-align: center;
-    }
-
-
-    .color {
-      background-color: var(--page-color);
-    }
-
-
-    neon-animated-pages {
-      height: 94%;
-    }
-
-
-
-
-    .drawerclicker {
+  .drawerclicker {
     width: 100%;
     height: 6%;
     background-color: var(--secondpage-color);
     @apply(--layout-vertical);
     @apply(--layout-start);
   }
-
 
   .drawer {
     background-color: var(--secondpage-color);
@@ -85,137 +58,159 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   }
 
-
-
-
-
-
   labs001-objectscollection {
     height: 100%;
   }
 
-
-
-
-
-
-
-
-  </style>
-  <template>
-    <paper-drawer-panel  force-narrow="true">
-    <div drawer class="drawer">
+</style>
+<template>
+  <paper-drawer-panel force-narrow="true">
+  <div drawer class="drawer">
+  </div>
+  <div main "color">
+    <div class="drawerclicker">
+      <img on-click="_toQR" class="drawerbtn" src="../../images/a_wit-rgb.svg">
+      <span class="flex"></span>
     </div>
-    <div main "color">
-      <div class="drawerclicker">
-        <img on-click="_toQR" class="drawerbtn" src="../../images/a_wit-rgb.svg">
-        <span class="flex"></span>
-      </div>
 
-      <iron-localstorage id="localstorage" name="labs001-user" value="{{encruserid}}">
-      </iron-localstorage>
+    <iron-localstorage id="localstorage" name="labs001-user" value="{{encruserid}}">
+  </iron-localstorage>
 
-      <neon-animated-pages id="pages" selected="[[selected]]"  class="color" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+  <neon-animated-pages id="pages" selected="{{selected}}"  class="color" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
-      <!-- Stage 0 -->
-      <dp-pin on-yes="toggleDrawer" on-pin-entered="decryptUser" pin="{{pin1}}" titel="Geef je pincode in." error="{{error}}">
-      </dp-pin>
+  <!-- Stage 0: Pincode ingeven (bestaande gebruiker) -->
+  <dp-pin on-yes="toggleDrawer" on-pin-entered="decryptUser" pin="{{pin1}}" titel="Geef je pincode in." error="{{error}}">
+</dp-pin>
 
-      <!-- Stage 1 -->
-      <neon-animatable>
-            <div class="canvas">
-            <labs001-objectscollection id="objectcoll" userid="{{userid}}" on-open-camera="_qrreader"></labs001-objectscollection>
-            
-            <button on-click="_qrreader">+</button>
-        </div>
-      </neon-animatable>
+<!-- Stage 1: Alle datasets renderen -->
+<neon-animatable>
+<div class="canvas">
+  <labs001-objectscollection id="objectcoll" userid="{{userid}}" on-open-camera="_qrreader"></labs001-objectscollection>
+  <button on-click="_qrreader">+</button>
+</div>
+</neon-animatable>
 
-      <!-- Stage 2 -->
-      <labs001-renderer dataset="{{emptyProfile}}"></labs001-renderer>
+<!-- Stage 2: Voorbeeld van een eerste dataset -->
+<labs001-renderer dataset="{{emptyProfile}}"></labs001-renderer>
 
-      <!-- Stage 3 -->
+<!-- Stage 3: QR code lezer -->
+<neon-animatable>
+<div class="canvas">
+  <alabs-qr></alabs-qr>
+</div>
+</neon-animatable>
+
+<!-- Stage 4: QR code / Identificatie weergeven -->
+<neon-animatable>
+<div class="canvas">
+  <button on-click="_toWhere">back</button>
+  <alabs-qrcode code="{{userid}}"></alabs-qrcode>
+</div>
+</neon-animatable>
+
+      <!-- Stage 5: Bevestig getuige (of iets anders) worden
+      Op termijn komt hier uw Queueueueeue met todo's -->
       <neon-animatable>
       <div class="canvas">
-          <alabs-qr></alabs-qr>
+        <h2>Wil je de getuige worden van <span>{{getuige}}</span>?</h2>
+        <button on-click="_ConfirmGetuige">JA!</button>
+        <button on-click="_CancelGetuige">NEEN!</button>
       </div>
-      </neon-animatable>
+    </neon-animatable>
 
-      <!-- Stage 4 -->
-      <neon-animatable>
-            <div class="canvas">
-            <button on-click="_toWhere">back</button>
-        <alabs-qrcode code="{{userid}}"></alabs-qrcode>
-        </div>
-      </neon-animatable>
-
-
-      <!-- Stage 5 -->
-      <neon-animatable>
-            <div class="canvas">
-              <h2>Wil je de getuige worden van NAAM?</h2>
-                <button on-click="_ConfirmGetuige">JA!</button>
-                <button on-click="_CancelGetuige">NEEN!</button>
-        </div>
-      </neon-animatable>
-
-
-    </neon-animated-pages>
-  </div>
-  </paper-drawer-panel>
-  </template>
+  </neon-animated-pages>
+</div>
+</paper-drawer-panel>
+</template>
 </dom-module>
 <script>
-(function() {
+  (function() {
 
-  var conn; 
+    var conn; 
 
-  var logs = [{log: "first log"}];
+    var pageselected = 0;
 
-  Polymer({
-    is: 'labs001-stage',
+    var stage;
+    var app;
 
-    properties: {
-      foo: {
-        type: String,
-        value: 'bar',
-        notify: true
-      },
+    window.addEventListener('WebComponentsReady', function() {
+    // imports are loaded and elements have been registered
+    stage = document.getElementById("pages");
+    console.log(stage);
+    app = document.querySelector("labs001-stage");
+    console.log(app);
+  });
 
-      logs: {
-        type: Array,
-        observer: "_logLogs"
-      },
+    var changeStage = function(e, user){
+      stage.selected = 5;
+      app.log('iets vanuit vanilla naar polymer');
+      app.getuige = user;
+    };
 
+    Polymer({
+      is: 'labs001-stage',
 
-      selected: {
-        type: Number,
-        observer: "_selectedChanged"
-      },
+      properties: {
 
-      emptyProfile: {
-        type: Object,
-        value: {
-          datasetName: "basisprofiel",
-          datasetTypes: ["titel", "string", "string"],
-          datasetLabels: ["Basisinfo", "voornaam", "naam"],
-          datasetWaarden: ["null", "Michael", "Thuy"]
+        selected: {
+          type: Number,
+          observer: "_selectedChanged"
+        },
+
+        emptyProfile: {
+          type: Object,
+          value: {
+            datasetName: "basisprofiel",
+            datasetTypes: ["titel", "string", "string"],
+            datasetLabels: ["Basisinfo", "voornaam", "naam"],
+            datasetWaarden: ["null", "Michael", "Thuy"]
+          }
         }
-      }
 
-    },
+      },
 
-    ready: function(){
-      this.selected = 0;
-      this.entryAnimation = 'slide-from-right-animation';
-      this.exitAnimation = 'slide-left-animation';
-      this.logs = [{log: "eerste"}];
+      ready: function(){
+        this.selected = pageselected;
+        this.entryAnimation = 'slide-from-right-animation';
+        this.exitAnimation = 'slide-left-animation';
+        var that = this;
+        this.addEventListener('send-message', function(e){
+          console.log('event listener om een message te sturen', e);
+          that.sendMessage(e.detail.command, e.detail.towho);
+        });
+        this.addEventListener('change-stage', function(e){
+          console.log('Changing stage', e.stage);
+          that.selected = e.stage;
+        });
+      },
+
+    // Dees functie wordt aangesproken wanneer er een message binnenkomt. 
+    incoming: function(msg){
       var that = this;
-      this.addEventListener('send-message', function(e){
-        console.log('event listener om een message te sturen', e);
-        that.sendMessage(e.detail.command, e.detail.towho);
-      });
+      var userid = this.userid;
+      console.log('--- iets misschien? ', msg);
+      var to = msg.getAttribute('to');
+      var from = msg.getAttribute('from');
+      var type = msg.getAttribute('type');
+      var elems = msg.getElementsByTagName('body');
+      var body = elems[0];
+      if(body!=null){
+        var bodymsg = Strophe.getText(body);
+        console.log('--- ',bodymsg);
+        // HTML escape body eerst
+        //var commandarray = bodymsg.replace(/<(?:.|\n)*?>/gm, '');
+        //console.log(commandarray);
+        var commandarray = bodymsg.split(",");
+        console.log('command: ',commandarray[0],'fromWho: ',commandarray[1]);
+        // En hier moet ne switch komen die functies gaat uitvoeren naargelang commando dat in de message zit.
+        if(commandarray[0]=="addgetuige"){
+          changeStage(5, commandarray[1]);  
+        };
+      };
+      return true;
     },
 
+    // Dees functie wordt gebruikt om een chat message te versturen. 
     sendMessage: function(command, towho){
       console.log('preparing to send message');
       var from = this.userid+'@kingflurkel.dtdns.net';
@@ -231,96 +226,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       conn.send(msg);
     },
 
-    giveDataset: function(dataset, userto){
-      var emptyProfile = this.emptyProfile;
-      var themessage = 'heresadataset,'+dataset;
-      var userdomain = "@kingflurkel.dtdns.net";
-      var msg = $msg({
-        to: userto+userdomain
-      })
-      .cnode(Strophe.xmlElement('body', themessage)).up()
-      .c('active', {xmlns: "http://jabber.org/protocol/chatstates"});
-      conn.send(msg);
-    },
 
-    _selectedChanged: function(){
-      // console.log('page selected: ', this.selected);
-      switch (this.selected) {
-        case 0:
-          this.color1 = 'var(--primary-red)';
-          this.color2 = 'var(--primary-red)';
-          // console.log(this.color); 
-        break;
-        case 1:
-          this.color1 = 'white';
-          this.color2 = '#a4e5f9';
-          // console.log(this.color); 
-          this.mode = 'idlemode';
-
-
-        break;
-        case 2:
-          this.color1 = 'white';
-          this.color2 = '#a4e5f9';
-          this.mode = 'editmode';
-
-          // console.log(this.color); 
-                    // console.log(this.mode); 
-
-        break;
-        case 3:
-          this.color1 = 'grey';
-          this.color2 = 'grey';
-          // console.log(this.color); 
-                    // console.log(this.mode); 
-        break;
-        case 4:
-          this.color1 = 'white';
-          this.color2 = 'grey';
-          // console.log(this.color); 
-                    // console.log(this.mode); 
-        break;
-      };
-
-
-        this.customStyle['--page-color'] = this.color1;
-        this.customStyle['--secondpage-color'] = this.color2;
-        this.updateStyles();
-    },
-
-    _logLogs: function(){
-      //console.log('logs: ', this.logs);
-    },
-
+    // Dees functie opent de qr reader en wacht tot em iets terug krijgt.
     _qrreader: function(){
       this.importHref("../elements/alabs-qr/alabs-qr.html", function(e) {
         this.addEventListener("got-code", function(e){
-          console.log('event listener qr code werkt', e.detail);
-          //return e.detail;
+          //Hier doet em shit als em een code terug krijgt. 
           this.$.objectcoll.callback(e.detail);
-          this.selected = 1;
         });
       // e.target.import is the import document.
       //console.log('import',e);
-      }, function(e) {
+    }, function(e) {
       //console.log('import',e);
       // loading error
-      });
+    });
       this.selected = 3;
     },
 
+    // Userobject decrypteren met ingegeven pin code
     decryptUser: function(){
-      //console.log("--- Decrypting user ID ---");
       var decrypted = CryptoJS.AES.decrypt(this.encruserid, this.pin1);
       var decrtostring = decrypted.toString(CryptoJS.enc.Utf8);
       this.userid = decrtostring;
-      //console.log("--- Decryted user ID: ", this.userid);
       this.login(this.userid, this.pin1);
     },
 
-    joinRoom: function(username, password){
+    // Wordt nog niet gebruikt, maar deze functie doet JOIN in chatroom.
+    joinRoom: function(username, password, room){
       var that = this;
-      this.room = "astadlabs";
+      this.room = room;
       //console.log('--- User joins room "astadlabs"');
       var room = this.room+"@conference.kingflurkel.dtdns.net";
       var nick = username+"@kingflurkel.dtdns.net";
@@ -329,57 +263,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       conn.muc.join(room, nick, that.msg_handler_cb, that.pres_handler_cb, that.roster_cb, password, history_attrs);
     },
 
-    // Dees functie wordt aangesproken wanneer er een message binnenkomt. 
-    // Checkt eerst en vooral of het wel voor deze ontvanger is want anders krijgt de verzender het ook en dat is onnozel.
-
-    incoming: function(msg){
-      var userid = this.userid;
-      console.log('--- iets misschien? ', msg);
-      var to = msg.getAttribute('to');
-      var from = msg.getAttribute('from');
-      var type = msg.getAttribute('type');
-      var elems = msg.getElementsByTagName('body');
-      var body = elems[0];
-      if(body!=null){
-      var bodymsg = Strophe.getText(body);
-      console.log('--- ',bodymsg);
-      // HTML escape body eerst
-      //var commandarray = bodymsg.replace(/<(?:.|\n)*?>/gm, '');
-      //console.log(commandarray);
-      var commandarray = bodymsg.split(",");
-      console.log('command: ',commandarray[0],'fromWho: ',commandarray[1]);  
-        };
-      this.selected = 5;
-      return true;
-    },
-
-
+    // User wordt ingelogd op de chatserver
     login: function(username, password){
-      //console.log('--- OpenFire start login procedure for user ', username, ' with pass ', password,' ---');
-
       conn = new Openfire.Connection("ws://kingflurkel.dtdns.net:7070/ws/server", function(e){
         console.log(e);
       });
 
-      //console.log('connection: ', conn);
-      
       var that = this;
 
       conn.connect(username, password, function(status){
-        //console.log('connect');
         if (status === Strophe.Status.CONNECTED) {
+          // Als em goed is ingelogd doe dit
           console.log('--- Connected to OpenFire');
-          that.joinRoom(username, password);
+          //that.joinRoom(username, password, "astadlabs");
           conn.addHandler(that.incoming);
           conn.send($pres().tree());
-          //that.sendTest();
           that.fire('logged-in');
           that.connected = true;
           that.selected = 1;
         } else if (status === Strophe.Status.DISCONNECTED) {
-          //console.log('--- Disconnect');
-            //$(document).trigger('disconnected');
-          //console.log('no yoooo');
+          // Als er iets fout ging met login doe dit
           that.fire('disconnected');
           that.selected = 0;
           that.error = "error!";
@@ -387,36 +290,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           that.connected = false;
         };
       });
-
-      //console.log('Button is geklikt. User: ', username, ' Pass: ', password);
     },
+
+    // Niet gebruikt for now
     msg_handler_cb: function(msg){
       var to = msg.getAttribute('to');
       var from = msg.getAttribute('from');
       var type = msg.getAttribute('type');
       var elems = msg.getElementsByTagName('body');
       var body = elems[0];
-      //console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', body);
-      //console.log('ik moet zien wat de boodschap is, en eventueel een functie triggeren lokaal');
+
       if(body=="alert"){
-          alert('alert ontvangen');
-          console.log('alert ontvangen');
+        alert('alert ontvangen');
+        console.log('alert ontvangen');
       };
       return true;
     },
 
+    // Niet gebruikt for now
     pres_handler_cb: function(){
       //console.log('--- Set presence handler');
       return true;
     },
 
+    // Niet gebruikt for now
     roster_cb: function(){
       //console.log('--- Set roster handler');
       return true;
     },
 
-
-
+    // Navigational stuff
     _toQR:function(){
       this.selected = 4;
     },
@@ -435,11 +338,60 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _CancelGetuige: function() {
       console.log('Neen, annuleren!');
-    }
+    },
+
+    // Variable listeners
+
+    _selectedChanged: function(){
+      // console.log('page selected: ', this.selected);
+      switch (this.selected) {
+        case 0:
+        this.color1 = 'var(--primary-red)';
+        this.color2 = 'var(--primary-red)';
+          // console.log(this.color); 
+          break;
+          case 1:
+          this.color1 = 'white';
+          this.color2 = '#a4e5f9';
+          // console.log(this.color); 
+          this.mode = 'idlemode';
 
 
+          break;
+          case 2:
+          this.color1 = 'white';
+          this.color2 = '#a4e5f9';
+          this.mode = 'editmode';
+
+          // console.log(this.color); 
+                    // console.log(this.mode); 
+
+                    break;
+                    case 3:
+                    this.color1 = 'grey';
+                    this.color2 = 'grey';
+          // console.log(this.color); 
+                    // console.log(this.mode); 
+                    break;
+                    case 4:
+                    this.color1 = 'white';
+                    this.color2 = 'grey';
+          // console.log(this.color); 
+                    // console.log(this.mode); 
+                    break;
+                    case 5:
+                    this.color1 = 'black';
+                    this.color2 = 'red';
+          // console.log(this.color); 
+                    // console.log(this.mode); 
+                    break;
+                  };
 
 
-  });
+                  this.customStyle['--page-color'] = this.color1;
+                  this.customStyle['--secondpage-color'] = this.color2;
+                  this.updateStyles();
+                }
+              });
 })();
 </script>

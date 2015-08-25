@@ -138,8 +138,8 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
         console.log('ik doe iets ', e);
         // send message to witness "do you wanne be my witness?"
 
-        this.fire("send-message", { command: "bla", towho: e.detail });
-
+        this.fire("send-message", { command: "addgetuige", towho: e.detail });
+x
         var rendercanvas = this.$.getuigen;
         var li = document.createElement("li");
             li.innerHTML = e.detail;
