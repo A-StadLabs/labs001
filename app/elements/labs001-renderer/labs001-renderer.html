@@ -34,17 +34,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _dataset: function(){
       var dataset = this.dataset;
-      console.log(dataset);
-      console.log(dataset.datasetLabels);
+      //console.log(dataset);
+      //console.log(dataset.datasetLabels);
       var types = dataset.datasetTypes;
 
       for (var i = -1 + 1; i <= types.length; i++) {
-        console.log(types[i]);
+        //console.log(types[i]);
         var rendercanvas = this.$.rendercanvas;
         switch(types[i]){
           case "string":
             // zet een input veld
-            console.log('RENDERER: zet een input veld string', dataset[i]);
+            //console.log('RENDERER: zet een input veld string', dataset[i]);
             var textinput = document.createElement("input");
             textinput.placeholder = dataset.datasetLabels[i];
             rendercanvas.appendChild(textinput);

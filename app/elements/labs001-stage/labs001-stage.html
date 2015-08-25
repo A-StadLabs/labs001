@@ -112,36 +112,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <span class="flex"></span>
       </div>
 
-
-        <iron-localstorage id="localstorage" name="labs001-user" value="{{encruserid}}">
-        </iron-localstorage>
+      <iron-localstorage id="localstorage" name="labs001-user" value="{{encruserid}}">
+      </iron-localstorage>
 
       <neon-animated-pages id="pages" selected="[[selected]]"  class="color" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
-        <dp-pin on-yes="toggleDrawer" on-pin-entered="decryptUser" pin="{{pin1}}" titel="Geef je pincode in." error="{{error}}">
-        </dp-pin>
+      <!-- Stage 0 -->
+      <dp-pin on-yes="toggleDrawer" on-pin-entered="decryptUser" pin="{{pin1}}" titel="Geef je pincode in." error="{{error}}">
+      </dp-pin>
 
-
-      
-<!--       <labs001-objectscollection userid="{{userid}}" on-open-camera="_qrreader"></labs001-objectscollection> -->
-
-
+      <!-- Stage 1 -->
       <neon-animatable>
             <div class="canvas">
-            <button on-click="_toScanner">+</button>
+            <labs001-objectscollection id="objectcoll" userid="{{userid}}" on-open-camera="_qrreader"></labs001-objectscollection>
+            
+            <button on-click="_qrreader">+</button>
         </div>
       </neon-animatable>
 
-
-
+      <!-- Stage 2 -->
       <labs001-renderer dataset="{{emptyProfile}}"></labs001-renderer>
 
+      <!-- Stage 3 -->
       <neon-animatable>
       <div class="canvas">
-        <alabs-qr on-got-code="gotcode"></alabs-qr>
+          <alabs-qr></alabs-qr>
       </div>
       </neon-animatable>
 
+      <!-- Stage 4 -->
       <neon-animatable>
             <div class="canvas">
             <button on-click="_toWhere">back</button>
@@ -194,15 +193,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     },
 
-    gotcode: function(e){
-      console.log('got code', e.detail.detail);
-      var string = e.detail.detail;
-      
+    ready: function(){
+      this.selected = 0;
+      this.entryAnimation = 'slide-from-right-animation';
+      this.exitAnimation = 'slide-left-animation';
+      this.logs = [{log: "eerste"}];
+      var that = this;
+      this.addEventListener('send-message', function(e){
+        console.log('event listener om een message te sturen', e);
+        that.sendMessage(e.detail.command, e.detail.towho);
+      });
     },
 
-    askforDataset: function(datasetname, fromwho){
-      var themessage = 'givemeDataset,'+datasetname;
-      var to = fromwho+'@kingflurkel.dtdns.net';
+    sendMessage: function(command, towho){
+      console.log('preparing to send message');
+      var from = this.userid+'@kingflurkel.dtdns.net';
+      console.log('from: '+from);
+      var to = towho+'@kingflurkel.dtdns.net';
+      console.log('to: ', to);
+      var themessage = command+','+from;
+      console.log('message: ', themessage);
       var msg = $msg({
         to: to
       }).cnode(Strophe.xmlElement('body', themessage)).up()
@@ -268,43 +278,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _logLogs: function(){
-      console.log('logs: ', this.logs);
+      //console.log('logs: ', this.logs);
     },
-
-
-
-    ready: function(){
-      this.selected = 0;
-      this.entryAnimation = 'slide-from-right-animation';
-      this.exitAnimation = 'slide-left-animation';
-      this.logs = [{log: "eerste"}];
-    },
-
 
     _qrreader: function(){
       this.importHref("../elements/alabs-qr/alabs-qr.html", function(e) {
-    // e.target.import is the import document.
-      console.log('import',e);
-}, function(e) {
-  console.log('import',e);
-    // loading error
-});
+        this.addEventListener("got-code", function(e){
+          console.log('event listener qr code werkt', e.detail);
+          //return e.detail;
+          this.$.objectcoll.callback(e.detail);
+          this.selected = 1;
+        });
+      // e.target.import is the import document.
+      //console.log('import',e);
+      }, function(e) {
+      //console.log('import',e);
+      // loading error
+      });
       this.selected = 3;
     },
 
     decryptUser: function(){
-      console.log("--- Decrypting user ID ---");
+      //console.log("--- Decrypting user ID ---");
       var decrypted = CryptoJS.AES.decrypt(this.encruserid, this.pin1);
       var decrtostring = decrypted.toString(CryptoJS.enc.Utf8);
       this.userid = decrtostring;
-      console.log("--- Decryted user ID: ", this.userid);
+      //console.log("--- Decryted user ID: ", this.userid);
       this.login(this.userid, this.pin1);
     },
 
     joinRoom: function(username, password){
       var that = this;
       this.room = "astadlabs";
-      console.log('--- User joins room "astadlabs"');
+      //console.log('--- User joins room "astadlabs"');
       var room = this.room+"@conference.kingflurkel.dtdns.net";
       var nick = username+"@kingflurkel.dtdns.net";
       var password = password;
@@ -317,52 +323,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     incoming: function(msg){
       var userid = this.userid;
-      //console.log('--- iets misschien? ', e);
+      console.log('--- iets misschien? ', msg);
       var to = msg.getAttribute('to');
       var from = msg.getAttribute('from');
       var type = msg.getAttribute('type');
       var elems = msg.getElementsByTagName('body');
       var body = elems[0];
+      if(body!=null){
       var bodymsg = Strophe.getText(body);
       console.log('--- ',bodymsg);
-      //console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', bodymsg);
-      //logs.push({log: body});
-      //heresadataset
-        console.log('tis voor mij!');
-        var string = body;
-        var commandarray = string.split(",");
-        console.log(commandarray[0],commandarray[1]);  
-        var command = commandarray[0];
-        var cuser = commandarray[1];
-        var cobject = commandarray[2];
-        switch(command){
-          case "givemeDataset":
-          alert('fuck yeah murica');
-            console.log('ik heb een dataset aanvraag ontvangen: ', cobject, 'van user ', from);
-            // en dan ne reply sturen met een dataset
-            break;
+      // HTML escape body eerst
+      //var commandarray = bodymsg.replace(/<(?:.|\n)*?>/gm, '');
+      //console.log(commandarray);
+      var commandarray = bodymsg.split(",");
+      console.log('command: ',commandarray[0],'fromWho: ',commandarray[1]);  
         };
-
-     
-      
       return true;
     },
 
 
     login: function(username, password){
-
-      console.log('--- OpenFire start login procedure for user ', username, ' with pass ', password,' ---');
+      //console.log('--- OpenFire start login procedure for user ', username, ' with pass ', password,' ---');
 
       conn = new Openfire.Connection("ws://kingflurkel.dtdns.net:7070/ws/server", function(e){
         console.log(e);
       });
 
-      console.log('connection: ', conn);
+      //console.log('connection: ', conn);
       
       var that = this;
 
       conn.connect(username, password, function(status){
-        console.log('connect');
+        //console.log('connect');
         if (status === Strophe.Status.CONNECTED) {
           console.log('--- Connected to OpenFire');
           that.joinRoom(username, password);
@@ -373,7 +365,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           that.connected = true;
           that.selected = 1;
         } else if (status === Strophe.Status.DISCONNECTED) {
-          console.log('--- Disconnect');
+          //console.log('--- Disconnect');
             //$(document).trigger('disconnected');
           //console.log('no yoooo');
           that.fire('disconnected');

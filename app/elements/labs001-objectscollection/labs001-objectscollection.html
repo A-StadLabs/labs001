@@ -42,6 +42,9 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
       margin: 0px 5vw 0px 5vw;
     }*/
 
+    ul {
+      color: black;
+    }
 
 
 
@@ -66,16 +69,14 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 <h2>test? <span>{{tekstje2}}</span></h2>
 <button on-click="savevalue">save</button>
 <iron-localstorage name="labs-001-object1" value="{{tekstje2}}"></iron-localstorage>
-<button on-click="verzendmodusaan">verstuur object</button>
-<template is="dom-if" if="{{verzendmodus}}">
-  <h1>Verzendmodus</h1>
-  <button on-click="openCamera">Deel deze dataset</button>
-</template>
+<button on-click="addGetuige">Getuige toevoegen</button>
+<ul id="getuigen">
+</ul>
 </div>
 </div>
 
-  </template>
-  <script>
+</template>
+<script>
   (function() {
     Polymer({
       is: 'labs001-objectscollection',
@@ -109,37 +110,40 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
         this.tekstje2 = val;
       },
 
-
       ready: function(){
+        this.sharedElements = {
+          'hero': this.$.test,
+        };
 
-      this.sharedElements = {
-        'hero': this.$.test,
-      };
-
-      this.verzendmodus = false;
+        this.verzendmodus = false;
 
       },
 
-      verzendmodusaan: function(){
-        this.qrcode = 'givedataset'+','+this.userid+','+'basisprofiel';
-        this.verzendmodus = true;
-      },
+   
 
       openCamera: function(){
-        this.fire("open-camera");
+        this.fire("open-camera", function(e){
+          console.log('iets? ', e);
+        });
       },
 
-      toIdleMode:function(){
-        this.fire('to-idle');
+      addGetuige: function(){
+        // we gaan de camera openen en "wachten" tot er een value terugkomt.
+        this.openCamera(function(returnvalue){
+          console.log(returnvalue);
+        });
       },
 
-      _Next: function(e,detail,sender) {
-        this.fire('to-edit', {  detail1:e.target.attributes[0].value ,
-                                detail2:e.target.attributes[1].value  
-                              });
-        var target = e;
-        console.log(target);
+      callback: function(e){
+        console.log('ik doe iets ', e);
+        // send message to witness "do you wanne be my witness?"
 
+        this.fire("send-message", { command: "bla", towho: e.detail });
+
+        var rendercanvas = this.$.getuigen;
+        var li = document.createElement("li");
+            li.innerHTML = e.detail;
+            rendercanvas.appendChild(li);
       },
 
 
