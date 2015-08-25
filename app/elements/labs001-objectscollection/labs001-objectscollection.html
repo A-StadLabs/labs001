@@ -69,8 +69,7 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
 <button on-click="verzendmodusaan">verstuur object</button>
 <template is="dom-if" if="{{verzendmodus}}">
   <h1>Verzendmodus</h1>
-  <p>{{qrcode}}</p>
-  <alabs-qrcode code="{{qrcode}}"></alabs-qrcode>
+  <button on-click="openCamera">Deel deze dataset</button>
 </template>
 </div>
 </div>
@@ -122,15 +121,17 @@ In de tweede pagina van de objectcanvas komen we in een editmode van het hier-ge
       },
 
       verzendmodusaan: function(){
-        this.qrcode = 'getdataset'+','+this.userid+','+'basisprofiel';
+        this.qrcode = 'givedataset'+','+this.userid+','+'basisprofiel';
         this.verzendmodus = true;
       },
 
+      openCamera: function(){
+        this.fire("open-camera");
+      },
 
       toIdleMode:function(){
         this.fire('to-idle');
       },
-
 
       _Next: function(e,detail,sender) {
         this.fire('to-edit', {  detail1:e.target.attributes[0].value ,

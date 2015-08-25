@@ -100,12 +100,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <paper-drawer-panel  force-narrow="true">
     <div drawer class="drawer">
-      <h2>Dit is de drawer</h2>
-      <button on-click="_qrreader">Scan een QR code</button>
     </div>
     <div main "color">
       <div class="drawerclicker">
-        <img paper-drawer-toggle class="drawerbtn" src="../../images/a_wit-rgb.svg">
+        <img on-click="_toQR" class="drawerbtn" src="../../images/a_wit-rgb.svg">
         <span class="flex"></span>
       </div>
 
@@ -113,14 +111,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-localstorage id="localstorage" name="labs001-user" value="{{encruserid}}">
         </iron-localstorage>
 
-      <neon-animated-pages id="pages" selected="[[selected]]"  class="color">
+      <neon-animated-pages id="pages" selected="[[selected]]"  class="color" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
         <dp-pin on-yes="toggleDrawer" on-pin-entered="decryptUser" pin="{{pin1}}" titel="Geef je pincode in." error="{{error}}">
         </dp-pin>
 
 
       
-      <labs001-objectscollection userid="{{userid}}"></labs001-objectscollection>
+      <labs001-objectscollection userid="{{userid}}" on-open-camera="_qrreader"></labs001-objectscollection>
 
       <labs001-renderer dataset="{{emptyProfile}}"></labs001-renderer>
 
@@ -128,6 +126,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="canvas">
         <alabs-qr class="flex" on-got-code="gotcode"></alabs-qr>
       </div>
+      </neon-animatable>
+
+      <neon-animatable>
+            <div class="canvas">
+            <button on-click="_toWhere">back</button>
+        <alabs-qrcode code="{{userid}}"></alabs-qrcode>
+        </div>div>
       </neon-animatable>
 
     </neon-animated-pages>
@@ -178,42 +183,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     gotcode: function(e){
       console.log('got code', e.detail.detail);
       var string = e.detail.detail;
-      var commandarray = string.split(",");
-      console.log(commandarray[0],commandarray[1]);  
-      var command = commandarray[0];
-      var cuser = commandarray[1];
-      var cobject = commandarray[2];
-      switch(command){
-        case "validate":
-          break;
-        case "voidvalidation":
-          break;
-        case "getuseraccount":
-          break;
-        case "subscribe":
-          break;
-        case "getdataset":
-          console.log('Ask for dataset: ', cobject, ' send to user ', cuser);
-          break;
-        case "senddataset":
-          this.sendDataset(emptyProfile, cuser);
-          break;
       };
-      // themessage = 'Twee users hebben elkaar gevonden, namelijk user '+this.userid+' en '+e.detail.detail+' en hier is mijn userobject: '+this.userobject;
-      // var reply = $msg({
-      //   to: 'astadlabs@conference.kingflurkel.dtdns.net',
-      //   type: 'groupchat'
-      // })
-      // .cnode(Strophe.xmlElement('body', themessage)).up()
-      // .c('active', {xmlns: "http://jabber.org/protocol/chatstates"});
-      // conn.send(reply);
     },
 
-    sendDataset: function(dataset, userto){
-      var dataset = JSON.stringify(dataset);
-      themessage = 'getdataset,'+dataset;
+    askforDataset: function(datasetname, fromwho){
+      var themessage = 'givemeDataset,'+datasetname;
+      var to = fromwho+'@kingflurkel.dtdns.net';
       var msg = $msg({
-        to: userto
+        to: to
+      }).cnode(Strophe.xmlElement('body', themessage)).up()
+      .c('active', {xmlns: "http://jabber.org/protocol/chatstates"});
+      conn.send(msg);
+    },
+
+    giveDataset: function(dataset, userto){
+      var emptyProfile = this.emptyProfile;
+      var themessage = 'heresadataset,'+dataset;
+      var userdomain = "@kingflurkel.dtdns.net";
+      var msg = $msg({
+        to: userto+userdomain
       })
       .cnode(Strophe.xmlElement('body', themessage)).up()
       .c('active', {xmlns: "http://jabber.org/protocol/chatstates"});
@@ -241,6 +229,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.color2 = '#a4e5f9';
           this.mode = 'editmode';
 
+          // console.log(this.color); 
+                    // console.log(this.mode); 
+
+        break;
+        case 4:
+          this.color1 = 'white';
+          this.color2 = 'grey';
           // console.log(this.color); 
                     // console.log(this.mode); 
 
@@ -298,7 +293,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       conn.muc.join(room, nick, that.msg_handler_cb, that.pres_handler_cb, that.roster_cb, password, history_attrs);
     },
 
-    logIets: function(msg){
+    // Dees functie wordt aangesproken wanneer er een message binnenkomt. 
+    // Checkt eerst en vooral of het wel voor deze ontvanger is want anders krijgt de verzender het ook en dat is onnozel.
+
+    incoming: function(msg){
+      var userid = this.userid;
       //console.log('--- iets misschien? ', e);
       var to = msg.getAttribute('to');
       var from = msg.getAttribute('from');
@@ -306,22 +305,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var elems = msg.getElementsByTagName('body');
       var body = elems[0];
       var bodymsg = Strophe.getText(body);
-      //console.log('--- ',bodymsg);
+      console.log('--- ',bodymsg);
       //console.log('--- Received ',type, ' ','message from ', from, ' to: ', to, ' Contents: ', bodymsg);
       //logs.push({log: body});
-      switch(bodymsg){
-        case "alert":
-          alert('alert ontvangen');
-          break;
-        case "hallo":
-          var string = from + ' zegt hallo';
-          alert(string);
-          break;
-      }
-      if(bodymsg=="alert"){
-          alert('alert ontvangen');
-          console.log('alert ontvangen');
-      };
+      //heresadataset
+        console.log('tis voor mij!');
+        var string = body;
+        var commandarray = string.split(",");
+        console.log(commandarray[0],commandarray[1]);  
+        var command = commandarray[0];
+        var cuser = commandarray[1];
+        var cobject = commandarray[2];
+        switch(command){
+          case "givemeDataset":
+          alert('fuck yeah murica');
+            console.log('ik heb een dataset aanvraag ontvangen: ', cobject, 'van user ', from);
+            // en dan ne reply sturen met een dataset
+            break;
+        };
+
+     
+      
       return true;
     },
 
@@ -343,7 +347,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (status === Strophe.Status.CONNECTED) {
           console.log('--- Connected to OpenFire');
           that.joinRoom(username, password);
-          conn.addHandler(that.logIets);
+          conn.addHandler(that.incoming);
           conn.send($pres().tree());
           //that.sendTest();
           that.fire('logged-in');
@@ -386,6 +390,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     roster_cb: function(){
       //console.log('--- Set roster handler');
       return true;
+    },
+
+
+
+    _toQR:function(){
+      this.selected = 4;
+    },
+
+    _toWhere:function(){
+      this.selected = 1;
     }
 
 
