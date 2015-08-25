@@ -145,8 +145,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div class="canvas">
             <button on-click="_toWhere">back</button>
         <alabs-qrcode code="{{userid}}"></alabs-qrcode>
-        </div>div>
+        </div>
       </neon-animatable>
+
+
+      <!-- Stage 5 -->
+      <neon-animatable>
+            <div class="canvas">
+              <h2>Wil je de getuige worden van NAAM?</h2>
+                <button on-click="_ConfirmGetuige">JA!</button>
+                <button on-click="_CancelGetuige">NEEN!</button>
+        </div>
+      </neon-animatable>
+
 
     </neon-animated-pages>
   </div>
@@ -415,6 +426,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _toScanner: function(){
       this.selected = 3;
+    },
+
+    _ConfirmGetuige: function() {
+      console.log('Yes, bevestigd!');
+    },
+
+    _CancelGetuige: function() {
+      console.log('Neen, annuleren!');
     }
 
 
